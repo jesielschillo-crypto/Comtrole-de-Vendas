@@ -1,5 +1,5 @@
 import { Product, Client, Sale, TerminalActivation, AccessRequest, StoreProfile, UserAccount } from '../types';
-import { getDynamicSupabaseClient } from './supabase';
+import { getDynamicSupabaseClient, isSupabaseConfigured } from './supabase';
 
 const STORAGE_KEYS = {
   TERMINAL: 'pc_craft_terminal_state',
@@ -11,6 +11,72 @@ const STORAGE_KEYS = {
   USERS: 'pc_craft_users',
   DEVICE_HWID: 'pc_craft_device_hwid',
 };
+
+const CLOUD_STATE_TABLE = 'app_state';
+const CLOUD_STATE_KEYS = [
+  'PRODUCTS',
+  'CLIENTS',
+  'SALES',
+  'REQUESTS',
+  'PROFILE',
+  'USERS',
+] as const;
+
+type CloudStateKey = (typeof CLOUD_STATE_KEYS)[number];
+
+const parseStoredValue = (value: string | null): unknown => {
+  if (!value) return null;
+  try {
+    return JSON.parse(value);
+  } catch {
+    return null;
+  }
+};
+
+async function saveCloudState(key: CloudStateKey, value: unknown) {
+  if (!isSupabaseConfigured()) return;
+
+  const { error } = await getDynamicSupabaseClient()
+    .from(CLOUD_STATE_TABLE)
+    .upsert({ key, value, updated_at: new Date().toISOString() }, { onConflict: 'key' });
+
+  if (error) console.error(`Falha ao salvar ${key} na nuvem:`, error.message);
+}
+
+export async function hydrateStorageFromCloud(): Promise<boolean> {
+  if (!isSupabaseConfigured()) return false;
+
+  const { data, error } = await getDynamicSupabaseClient()
+    .from(CLOUD_STATE_TABLE)
+    .select('key, value');
+
+  if (error) {
+    console.error('Falha ao carregar os dados da nuvem:', error.message);
+    return false;
+  }
+
+  const rows = (data || []) as Array<{ key: CloudStateKey; value: unknown }>;
+  if (rows.length === 0) {
+    await syncStorageToCloud();
+    return false;
+  }
+
+  rows.forEach(row => {
+    if (CLOUD_STATE_KEYS.includes(row.key)) {
+      localStorage.setItem(STORAGE_KEYS[row.key], JSON.stringify(row.value));
+    }
+  });
+
+  return true;
+}
+
+export async function syncStorageToCloud() {
+  if (!isSupabaseConfigured()) return;
+
+  await Promise.all(
+    CLOUD_STATE_KEYS.map(key => saveCloudState(key, parseStoredValue(localStorage.getItem(STORAGE_KEYS[key])))),
+  );
+}
 
 export const DEFAULT_HWID = 'HWID-9842-XF-BR88';
 export const MASTER_UNLOCK_CODE = '849210';
@@ -460,13 +526,7 @@ export const StorageManager = {
 
     localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
 
-    // Salva silenciosamente no Supabase se configurado
-    try {
-      const supabase = getDynamicSupabaseClient();
-      void supabase.from('users').upsert([newUser]);
-    } catch {
-      // ignore
-    }
+    void saveCloudState('USERS', users);
 
     return newUser;
   },
@@ -513,12 +573,7 @@ export const StorageManager = {
 
   saveProducts(products: Product[]) {
     localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
-    try {
-      const supabase = getDynamicSupabaseClient();
-      void supabase.from('products').upsert(products);
-    } catch {
-      // ignore
-    }
+    void saveCloudState('PRODUCTS', products);
   },
 
   addProduct(product: Omit<Product, 'id'>): Product {
@@ -556,12 +611,7 @@ export const StorageManager = {
 
   saveClients(clients: Client[]) {
     localStorage.setItem(STORAGE_KEYS.CLIENTS, JSON.stringify(clients));
-    try {
-      const supabase = getDynamicSupabaseClient();
-      void supabase.from('clients').upsert(clients);
-    } catch {
-      // ignore
-    }
+    void saveCloudState('CLIENTS', clients);
   },
 
   addClient(client: Omit<Client, 'id' | 'totalPending' | 'totalPaid' | 'installmentsPending' | 'status' | 'createdAt'> & { downPayment?: number; installmentsCount?: number; totalAmount?: number; soldItemsSummary?: string; }): Client {
@@ -633,6 +683,7 @@ export const StorageManager = {
     };
     sales.unshift(newSale);
     localStorage.setItem(STORAGE_KEYS.SALES, JSON.stringify(sales));
+    void saveCloudState('SALES', sales);
 
     const products = this.getProducts();
     let productsChanged = false;
@@ -706,6 +757,7 @@ export const StorageManager = {
 
   saveProfile(profile: StoreProfile) {
     localStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify(profile));
+    void saveCloudState('PROFILE', profile);
   },
 
   getAccessRequests(): AccessRequest[] {
@@ -732,6 +784,7 @@ export const StorageManager = {
     };
     requests.unshift(newReq);
     localStorage.setItem(STORAGE_KEYS.REQUESTS, JSON.stringify(requests));
+    void saveCloudState('REQUESTS', requests);
     return newReq;
   },
 
@@ -741,6 +794,7 @@ export const StorageManager = {
     if (target) {
       target.status = 'aprovado';
       localStorage.setItem(STORAGE_KEYS.REQUESTS, JSON.stringify(requests));
+      void saveCloudState('REQUESTS', requests);
       return target;
     }
     return null;
@@ -771,6 +825,7 @@ export const StorageManager = {
       requests.unshift(target);
     }
     localStorage.setItem(STORAGE_KEYS.REQUESTS, JSON.stringify(requests));
+    void saveCloudState('REQUESTS', requests);
     return target;
   }
 };

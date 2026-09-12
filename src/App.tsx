@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { StorageManager, DEFAULT_HWID } from './lib/storage';
+import React, { useEffect, useState } from 'react';
+import { hydrateStorageFromCloud, StorageManager } from './lib/storage';
+import { isSupabaseConfigured } from './lib/supabase';
 import { Product, Client, Sale, StoreProfile } from './types';
 import { Header } from './components/Header';
 import { Navigation } from './components/Navigation';
@@ -44,6 +45,7 @@ export default function App() {
 
   // Terminal authorization status
   const [terminalState, setTerminalState] = useState(() => StorageManager.getTerminalState());
+  const [cloudReady, setCloudReady] = useState(!isSupabaseConfigured());
   const [currentTab, setCurrentTab] = useState<string>('inicio');
 
   // App domain state
@@ -59,6 +61,25 @@ export default function App() {
   // Cross-screen interactions
   const [selectedProductForSale, setSelectedProductForSale] = useState<Product | null>(null);
   const [quickWhatsappClient, setQuickWhatsappClient] = useState<Client | null>(null);
+
+  useEffect(() => {
+    if (!isSupabaseConfigured()) return;
+
+    let mounted = true;
+    void hydrateStorageFromCloud().finally(() => {
+      if (!mounted) return;
+      setTerminalState(StorageManager.getTerminalState());
+      setProducts(StorageManager.getProducts());
+      setClients(StorageManager.getClients());
+      setSales(StorageManager.getSales());
+      setProfile(StorageManager.getProfile());
+      setCloudReady(true);
+    });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   // Sync state with storage on changes
   const handleAddProduct = (newProd: Omit<Product, 'id'>) => {
@@ -125,6 +146,17 @@ export default function App() {
   const pendingClientsCount = clients.filter((c) => c.totalPending > 0).length;
   const accessRequests = StorageManager.getAccessRequests();
   const pendingRequestsCount = accessRequests.filter((r) => r.status === 'pendente').length;
+
+  if (!cloudReady) {
+    return (
+      <div className="min-h-screen bg-[#f8f9ff] flex items-center justify-center p-6 text-center">
+        <div className="text-slate-600">
+          <span className="material-symbols-outlined text-3xl animate-spin text-[#00658c]">sync</span>
+          <p className="mt-2 text-sm font-semibold">Carregando seus dados...</p>
+        </div>
+      </div>
+    );
+  }
 
   // Se Jesiel clicou no link recebido no WhatsApp ou E-mail para liberar um cliente
   if (showApprovalPortal && approveHwid) {
