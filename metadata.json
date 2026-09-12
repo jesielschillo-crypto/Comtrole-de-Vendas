@@ -1,6 +1,6 @@
 {
   "name": "PC Craft Hardware",
-  "description": "Sistema de gestão para técnicos e montadores de PC com controle de estoque, vendas parceladas, cobranças e recibos no WhatsApp.",
+  "description": "Sistema de gestão e vendas de PCs e periféricos com controle de clientes, credenciamento por código de ativação e integração Supabase.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

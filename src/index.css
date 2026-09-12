@@ -2,51 +2,51 @@
 
 @layer base {
   :root {
-    --font-headline: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --primary: #00344f;
+    --primary-container: #034c70;
+    --on-primary: #ffffff;
+    --secondary: #00658c;
+    --secondary-container: #5dc6ff;
+    --on-secondary-container: #005171;
+    --surface: #f8f9ff;
+    --background: #f8f9ff;
+    --surface-container-lowest: #ffffff;
+    --surface-container-low: #eff4ff;
+    --surface-container: #e5eeff;
+    --surface-container-high: #dce9ff;
+    --on-surface: #0b1c30;
+    --on-surface-variant: #41474e;
+    --outline: #71787f;
+    --outline-variant: #c1c7cf;
+    --tertiary-container: #005237;
+    --on-tertiary-container: #37cd93;
+    --error: #ba1a1a;
+    --error-container: #ffdad6;
   }
 
   body {
-    font-family: var(--font-body);
+    background-color: var(--background);
+    color: var(--on-surface);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     -webkit-tap-highlight-color: transparent;
   }
-
-  h1, h2, h3, .font-headline {
-    font-family: var(--font-headline);
-  }
-
-  .pb-safe {
-    padding-bottom: max(1rem, env(safe-area-inset-bottom, 16px));
-  }
-
-  .pt-safe {
-    padding-top: max(0.5rem, env(safe-area-inset-top, 0px));
-  }
 }
 
-/* Hide scrollbar for clean chip/tag scrolling */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
 }
 
-@media print {
-  body {
-    background: white !important;
-    color: black !important;
-  }
-  header, nav, .no-print, button:not(.print-include) {
-    display: none !important;
-  }
-  main {
-    padding: 0 !important;
-  }
-  .print-card {
-    border: 1px solid #cbd5e1 !important;
-    box-shadow: none !important;
-  }
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 16px);
 }
 
