@@ -4,6 +4,7 @@ import { Product } from '../types';
 interface ProductsViewProps {
   products: Product[];
   onAddProduct: (product: Omit<Product, 'id'>) => void;
+  onUpdateProductStock: (productId: string, stockQuantity: number) => void;
   onSelectForSale: (product: Product) => void;
   onOpenRegistration?: () => void;
 }
@@ -11,11 +12,14 @@ interface ProductsViewProps {
 export const ProductsView: React.FC<ProductsViewProps> = ({
   products,
   onAddProduct,
+  onUpdateProductStock,
   onSelectForSale,
   onOpenRegistration,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('todos');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [editingStockId, setEditingStockId] = useState<string | null>(null);
+  const [editingStockValue, setEditingStockValue] = useState<string>('');
 
   // Form states
   const [name, setName] = useState<string>('');
@@ -173,9 +177,41 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
                 <div>
                   <div className="flex items-start justify-between gap-1">
                     <h4 className="text-sm font-bold text-slate-900 leading-snug line-clamp-1">{p.name}</h4>
-                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 shrink-0">
-                      {p.stockQuantity} em estoque
-                    </span>
+                    {editingStockId === p.id ? (
+                      <form
+                        onSubmit={(event) => {
+                          event.preventDefault();
+                          onUpdateProductStock(p.id, Number(editingStockValue));
+                          setEditingStockId(null);
+                        }}
+                        className="flex items-center gap-1 shrink-0"
+                      >
+                        <input
+                          autoFocus
+                          type="number"
+                          min={0}
+                          value={editingStockValue}
+                          onChange={(event) => setEditingStockValue(event.target.value)}
+                          className="w-14 h-7 px-1.5 rounded-lg border border-[#00658c] text-xs text-center font-bold outline-none"
+                          aria-label={`Quantidade em estoque de ${p.name}`}
+                        />
+                        <button type="submit" className="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center" title="Salvar estoque">
+                          <span className="material-symbols-outlined text-[16px]">check</span>
+                        </button>
+                      </form>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEditingStockId(p.id);
+                          setEditingStockValue(String(p.stockQuantity));
+                        }}
+                        className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 shrink-0 hover:bg-emerald-100"
+                        title="Editar quantidade em estoque"
+                      >
+                        {p.stockQuantity} em estoque
+                      </button>
+                    )}
                   </div>
 
                   <p className="text-[11px] text-slate-500 line-clamp-1 mt-0.5">

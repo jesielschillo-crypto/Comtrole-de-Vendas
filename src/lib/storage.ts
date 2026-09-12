@@ -532,6 +532,17 @@ export const StorageManager = {
     return newProduct;
   },
 
+  updateProductStock(productId: string, stockQuantity: number): Product | null {
+    const products = this.getProducts();
+    const product = products.find(item => item.id === productId);
+    if (!product) return null;
+
+    product.stockQuantity = Math.max(0, Math.floor(stockQuantity));
+    product.readyForDelivery = product.stockQuantity > 0;
+    this.saveProducts(products);
+    return product;
+  },
+
   getClients(): Client[] {
     try {
       const data = localStorage.getItem(STORAGE_KEYS.CLIENTS);
@@ -622,6 +633,18 @@ export const StorageManager = {
     };
     sales.unshift(newSale);
     localStorage.setItem(STORAGE_KEYS.SALES, JSON.stringify(sales));
+
+    const products = this.getProducts();
+    let productsChanged = false;
+    sale.items.forEach(item => {
+      const product = products.find(productItem => productItem.id === item.id);
+      if (!product) return;
+
+      product.stockQuantity = Math.max(0, product.stockQuantity - Math.max(0, item.quantity));
+      product.readyForDelivery = product.stockQuantity > 0;
+      productsChanged = true;
+    });
+    if (productsChanged) this.saveProducts(products);
 
     // Atualiza ou adiciona informações completas no cliente correspondente
     const clients = this.getClients();

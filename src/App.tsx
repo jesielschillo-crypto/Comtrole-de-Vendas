@@ -66,6 +66,11 @@ export default function App() {
     setProducts(StorageManager.getProducts());
   };
 
+  const handleUpdateProductStock = (productId: string, stockQuantity: number) => {
+    StorageManager.updateProductStock(productId, stockQuantity);
+    setProducts(StorageManager.getProducts());
+  };
+
   const handleSelectProductForSale = (prod: Product) => {
     setSelectedProductForSale(prod);
     setCurrentTab('nova-venda');
@@ -202,6 +207,7 @@ export default function App() {
           <ProductsView
             products={products}
             onAddProduct={handleAddProduct}
+            onUpdateProductStock={handleUpdateProductStock}
             onSelectForSale={handleSelectProductForSale}
             onOpenRegistration={() => setCurrentTab('cadastrar-produto')}
           />

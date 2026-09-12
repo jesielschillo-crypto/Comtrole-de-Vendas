@@ -52,6 +52,7 @@ export const NewSaleView: React.FC<NewSaleViewProps> = ({
     return d.toISOString().split('T')[0];
   });
   const [saleNotes, setSaleNotes] = useState<string>('');
+  const [stockError, setStockError] = useState<string>('');
 
   // Modal de Venda Concluída com Recibo WhatsApp
   const [completedSale, setCompletedSale] = useState<Sale | null>(null);
@@ -146,6 +147,7 @@ export const NewSaleView: React.FC<NewSaleViewProps> = ({
   // Conclusão da Venda
   const handleFinalizeSale = (e: React.FormEvent) => {
     e.preventDefault();
+    setStockError('');
     if (!clientName.trim()) {
       setCurrentStep(1);
       setStep1Error('Nome do cliente é obrigatório.');
@@ -153,6 +155,11 @@ export const NewSaleView: React.FC<NewSaleViewProps> = ({
     }
 
     const finalItemName = customItemName.trim() || 'PC Gamer Personalizado';
+    const selectedStockProduct = products.find(product => product.id === selectedProductId);
+    if (selectedStockProduct && selectedStockProduct.stockQuantity < 1) {
+      setStockError('Este produto está sem estoque. Atualize a quantidade antes de vender.');
+      return;
+    }
 
     // Auto-cria o cliente na base se for novo
     const existing = clients.find(
@@ -466,6 +473,7 @@ export const NewSaleView: React.FC<NewSaleViewProps> = ({
             </div>
 
             <div className="space-y-1.5">
+              {stockError && <p className="text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 rounded-xl p-2.5">{stockError}</p>}
               <label className="text-xs font-bold text-slate-700 block">
                 Selecionar do Estoque ou Customizado
               </label>
