@@ -291,7 +291,7 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlocked, onOpenAdminP
         </header>
 
         {/* Abas Superiores de Navegação */}
-        <div className="grid grid-cols-3 gap-1 mt-3 p-1 bg-slate-200/60 rounded-xl text-xs font-semibold">
+        <div className="hidden grid-cols-3 gap-1 mt-3 p-1 bg-slate-200/60 rounded-xl text-xs font-semibold">
           <button
             type="button"
             onClick={() => setViewMode('otp')}
@@ -338,7 +338,7 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlocked, onOpenAdminP
         {viewMode === 'otp' && (
           <main className="mt-4 space-y-4">
             {/* Banner WhatsApp para Solicitar Código (Exigência Principal) */}
-            <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-300 rounded-2xl p-4 shadow-sm space-y-2.5">
+            <div className="hidden bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-300 rounded-2xl p-4 shadow-sm space-y-2.5">
               <div className="flex items-center gap-2.5">
                 <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-sm">
                   <span className="material-symbols-outlined text-[24px]">chat</span>
@@ -379,7 +379,7 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlocked, onOpenAdminP
             </div>
 
             {/* Box Hardware ID & Proteção Anti-Repasse */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs space-y-2.5">
+            <div className="hidden bg-white rounded-2xl border border-slate-200 p-4 shadow-xs space-y-2.5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5 text-[#034c70]">
                   <span className="material-symbols-outlined text-[18px]">devices</span>
@@ -420,9 +420,9 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlocked, onOpenAdminP
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 space-y-4">
               <div className="flex items-center justify-between gap-2">
                 <div className="min-w-0">
-                  <h2 className="text-base sm:text-lg font-bold text-slate-900 truncate">Digite ou Cole o Código</h2>
+                  <h2 className="text-base sm:text-lg font-bold text-slate-900 truncate">Código de acesso</h2>
                   <p className="text-[11px] text-slate-500">
-                    Insira os 6 dígitos recebidos no WhatsApp:
+                    Digite o código recebido para acessar o PC Craft em qualquer aparelho:
                   </p>
                 </div>
                 <button
@@ -466,7 +466,7 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlocked, onOpenAdminP
 
                 <div className="flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg bg-slate-50 text-slate-600 text-center text-xs">
                   <span className="material-symbols-outlined text-[16px] text-[#00658c]">shield</span>
-                  <span>{statusMessage}</span>
+                  <span>{statusMessage.replace(' com o Hardware ID deste computador', '')}</span>
                 </div>
 
                 <button
@@ -482,7 +482,7 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlocked, onOpenAdminP
                   ) : (
                     <>
                       <span className="material-symbols-outlined text-[20px]">check_circle</span>
-                      <span>Liberar Acesso &amp; Cadastrar Senha</span>
+                      <span>Acessar o aplicativo</span>
                     </>
                   )}
                 </button>

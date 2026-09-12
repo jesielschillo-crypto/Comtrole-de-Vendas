@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Product } from '../types';
 
 interface ProductRegistrationViewProps {
@@ -24,6 +24,17 @@ export const ProductRegistrationView: React.FC<ProductRegistrationViewProps> = (
   const [maxInstallments, setMaxInstallments] = useState('1');
   const [stockQuantity, setStockQuantity] = useState('1');
   const [imageUrl, setImageUrl] = useState('');
+  const imageInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => setImageUrl(typeof reader.result === 'string' ? reader.result : '');
+    reader.readAsDataURL(file);
+    event.target.value = '';
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -104,9 +115,19 @@ export const ProductRegistrationView: React.FC<ProductRegistrationViewProps> = (
           </div>
         </div>
 
-        <div className="space-y-1">
-          <label htmlFor="product-image" className="text-xs font-bold uppercase tracking-wider text-slate-600">Imagem (opcional)</label>
-          <input id="product-image" type="url" value={imageUrl} onChange={event => setImageUrl(event.target.value)} placeholder="https://..." className="w-full h-11 px-3 rounded-xl border border-slate-300 text-sm outline-none focus:border-[#006194]" />
+        <div className="space-y-2">
+          <label className="text-xs font-bold uppercase tracking-wider text-slate-600">Foto do produto (opcional)</label>
+          <input ref={imageInputRef} id="product-image" type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
+          {imageUrl && (
+            <div className="relative w-28 h-28 rounded-xl overflow-hidden border border-slate-200">
+              <img src={imageUrl} alt="Prévia do produto" className="w-full h-full object-cover" />
+              <button type="button" onClick={() => setImageUrl('')} className="absolute top-1 right-1 w-6 h-6 rounded-full bg-black/60 text-white text-xs" aria-label="Remover foto">×</button>
+            </div>
+          )}
+          <button type="button" onClick={() => imageInputRef.current?.click()} className="w-full h-11 px-3 rounded-xl border border-slate-300 text-sm font-bold text-[#006194] flex items-center justify-center gap-2 hover:bg-slate-50">
+            <span className="material-symbols-outlined text-[18px]">photo_library</span>
+            <span>{imageUrl ? 'Trocar foto da galeria' : 'Escolher foto da galeria ou PC'}</span>
+          </button>
         </div>
 
         <div className="flex flex-col-reverse sm:flex-row gap-2 sm:justify-end pt-1">

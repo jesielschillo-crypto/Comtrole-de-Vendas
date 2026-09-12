@@ -347,7 +347,7 @@ export const StorageManager = {
     const cleanCode = (code || '').trim();
     if (!cleanCode) return { valid: false, reason: 'invalid' };
 
-    // 1. Código mestre do administrador Jesiel
+    // O código principal é uma licença do cliente, não uma chave do aparelho.
     if (cleanCode === MASTER_UNLOCK_CODE || cleanCode === SECONDARY_UNLOCK_CODE) {
       return { valid: true, reason: 'master' };
     }
@@ -360,17 +360,11 @@ export const StorageManager = {
       return { valid: true, reason: 'hwid_match' };
     }
 
-    // 3. Solicitação aprovada especificamente para este HWID
+    // Códigos aprovados também funcionam em qualquer aparelho do cliente.
     const requests = this.getAccessRequests();
-    const matchedRequest = requests.find(r => r.hwid.toUpperCase().trim() === currentHwid && r.accessCode === cleanCode);
+    const matchedRequest = requests.find(r => r.accessCode === cleanCode);
     if (matchedRequest) {
       return { valid: true, reason: 'request_match' };
-    }
-
-    // Verifica se o usuário digitou o código de OUTRO aparelho (tentativa de repasse)
-    const matchedOtherRequest = requests.find(r => r.accessCode === cleanCode && r.hwid.toUpperCase().trim() !== currentHwid);
-    if (matchedOtherRequest) {
-      return { valid: false, reason: 'different_device' };
     }
 
     return { valid: false, reason: 'invalid' };

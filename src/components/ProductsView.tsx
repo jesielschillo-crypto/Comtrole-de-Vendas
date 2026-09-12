@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Product } from '../types';
 
 interface ProductsViewProps {
@@ -28,6 +28,17 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
   const [imageUrl, setImageUrl] = useState<string>(
     'https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=600&auto=format&fit=crop&q=80'
   );
+  const imageInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => setImageUrl(typeof reader.result === 'string' ? reader.result : '');
+    reader.readAsDataURL(file);
+    event.target.value = '';
+  };
 
   const categories = [
     { id: 'todos', label: 'Todos' },
@@ -310,28 +321,14 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
                 />
               </div>
 
-              <div className="space-y-1">
-                <label className="font-bold text-slate-700 uppercase">URL Direta da Imagem</label>
-                <input
-                  type="url"
-                  value={imageUrl}
-                  onChange={(e) => setImageUrl(e.target.value)}
-                  placeholder="https://..."
-                  className="w-full h-10 px-3 border border-slate-300 rounded-xl text-xs outline-none focus:border-[#00658c]"
-                />
-                <div className="flex flex-wrap gap-1.5 pt-1">
-                  <span className="text-[10px] text-slate-500 self-center">Presets rápidos:</span>
-                  {presetImages.map((preset, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => setImageUrl(preset.url)}
-                      className="text-[10px] bg-slate-100 hover:bg-slate-200 px-2 py-0.5 rounded text-slate-700"
-                    >
-                      {preset.label}
-                    </button>
-                  ))}
-                </div>
+              <div className="space-y-2">
+                <label className="font-bold text-slate-700 uppercase">Foto do produto</label>
+                <input ref={imageInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
+                <button type="button" onClick={() => imageInputRef.current?.click()} className="w-full h-10 px-3 border border-slate-300 rounded-xl text-sm font-bold text-[#00658c] flex items-center justify-center gap-2 hover:bg-slate-50">
+                  <span className="material-symbols-outlined text-[18px]">photo_library</span>
+                  <span>Escolher foto da galeria ou PC</span>
+                </button>
+                {imageUrl && <img src={imageUrl} alt="Prévia do produto" className="w-20 h-20 rounded-xl object-cover border border-slate-200" />}
               </div>
 
               <div className="pt-2 flex gap-2">
