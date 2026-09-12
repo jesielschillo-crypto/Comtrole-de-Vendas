@@ -13,6 +13,7 @@ export const Navigation: React.FC<NavigationProps> = ({
 }) => {
   const tabs = [
     { id: 'inicio', label: 'Início', icon: 'grid_view' },
+    { id: 'estoque', label: 'Estoque', icon: 'inventory_2' },
     { id: 'nova-venda', label: 'Nova Venda', icon: 'shopping_cart' },
     {
       id: 'clientes',

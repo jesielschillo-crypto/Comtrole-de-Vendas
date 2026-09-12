@@ -26,6 +26,10 @@ export const Header: React.FC<HeaderProps> = ({
         return { title: 'PC Craft', subtitle: 'REGISTRAR VENDA & PARCELAMENTO' };
       case 'clientes':
         return { title: 'PC Craft', subtitle: 'CLIENTES & PARCELAS' };
+      case 'estoque':
+        return { title: 'PC Craft', subtitle: 'ESTOQUE & EQUIPAMENTOS' };
+      case 'cadastrar-produto':
+        return { title: 'PC Craft', subtitle: 'CADASTRAR PEÇA' };
       case 'perfil':
         return { title: 'PC Craft Hardware', subtitle: 'PERFIL' };
       default:

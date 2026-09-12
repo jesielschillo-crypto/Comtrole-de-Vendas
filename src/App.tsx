@@ -11,6 +11,8 @@ import { ProfileView } from './components/ProfileView';
 import { EditProfileModal } from './components/EditProfileModal';
 import { AdminRequestsModal } from './components/AdminRequestsModal';
 import { QuickApprovalScreen } from './components/QuickApprovalScreen';
+import { ProductsView } from './components/ProductsView';
+import { ProductRegistrationView } from './components/ProductRegistrationView';
 
 const cleanDemoDataOnFirstRun = () => {
   if (typeof window === 'undefined' || localStorage.getItem('pc_craft_clean_slate_v1')) return;
@@ -60,7 +62,7 @@ export default function App() {
 
   // Sync state with storage on changes
   const handleAddProduct = (newProd: Omit<Product, 'id'>) => {
-    const created = StorageManager.addProduct(newProd);
+    StorageManager.addProduct(newProd);
     setProducts(StorageManager.getProducts());
   };
 
@@ -193,6 +195,25 @@ export default function App() {
             onAddClient={handleAddClient}
             onPayInstallment={handlePayInstallment}
             quickOpenWhatsappClient={quickWhatsappClient}
+          />
+        )}
+
+        {currentTab === 'estoque' && (
+          <ProductsView
+            products={products}
+            onAddProduct={handleAddProduct}
+            onSelectForSale={handleSelectProductForSale}
+            onOpenRegistration={() => setCurrentTab('cadastrar-produto')}
+          />
+        )}
+
+        {currentTab === 'cadastrar-produto' && (
+          <ProductRegistrationView
+            onSave={product => {
+              handleAddProduct(product);
+              setCurrentTab('estoque');
+            }}
+            onCancel={() => setCurrentTab('estoque')}
           />
         )}
 

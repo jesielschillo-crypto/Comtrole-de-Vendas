@@ -1,6 +1,35 @@
 @import "tailwindcss";
 
 @layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  main,
+  header,
+  section,
+  form {
+    min-width: 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  label,
+  button,
+  a,
+  span {
+    overflow-wrap: anywhere;
+  }
+
   :root {
     --primary: #00344f;
     --primary-container: #034c70;

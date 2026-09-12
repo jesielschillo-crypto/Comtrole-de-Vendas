@@ -5,12 +5,14 @@ interface ProductsViewProps {
   products: Product[];
   onAddProduct: (product: Omit<Product, 'id'>) => void;
   onSelectForSale: (product: Product) => void;
+  onOpenRegistration?: () => void;
 }
 
 export const ProductsView: React.FC<ProductsViewProps> = ({
   products,
   onAddProduct,
   onSelectForSale,
+  onOpenRegistration,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('todos');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -138,7 +140,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
             </p>
           </div>
           <button
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => onOpenRegistration ? onOpenRegistration() : setIsModalOpen(true)}
             className="px-5 py-2.5 bg-[#00658c] hover:bg-[#00344f] text-white rounded-xl text-xs font-bold shadow-xs inline-flex items-center gap-1.5 transition-all"
           >
             <span className="material-symbols-outlined text-[16px]">add</span>
@@ -195,7 +197,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
       {/* Botão Flutuante + Cadastrar PC / Periférico (Screenshot 1) */}
       <div className="fixed bottom-20 left-0 right-0 z-30 flex justify-center px-4 pointer-events-none">
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => onOpenRegistration ? onOpenRegistration() : setIsModalOpen(true)}
           className="pointer-events-auto bg-[#00658c] hover:bg-[#00344f] text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-full shadow-lg flex items-center gap-2 transition-all duration-150 active:scale-95"
         >
           <span className="material-symbols-outlined text-[18px]">add</span>
