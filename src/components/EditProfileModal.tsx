@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StoreProfile } from '../types';
+import { AvatarSelector } from './AvatarSelector';
 
 interface EditProfileModalProps {
   isOpen: boolean;
@@ -75,46 +76,20 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
         <form onSubmit={handleSubmit} className="p-4 space-y-4 max-h-[82vh] overflow-y-auto">
           {/* Avatar Section */}
           <section className="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs text-center relative overflow-hidden">
-            <div className="relative inline-block mx-auto mb-2">
-              <div className="w-20 h-20 rounded-full ring-4 ring-slate-100 overflow-hidden shadow-xs bg-slate-100 flex items-center justify-center">
-                <img
-                  src={avatarUrl}
-                  alt={fullName}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  const url = prompt('Insira a URL direta da sua foto de perfil:', avatarUrl);
-                  if (url && url.trim()) setAvatarUrl(url.trim());
-                }}
-                className="absolute bottom-0 right-0 bg-[#034c70] text-white w-7 h-7 rounded-full flex items-center justify-center shadow-md hover:bg-[#00344f] border-2 border-white"
-                title="Alterar Foto"
-              >
-                <span className="material-symbols-outlined text-[15px]">photo_camera</span>
-              </button>
-            </div>
+            <AvatarSelector
+              currentAvatarUrl={avatarUrl}
+              onAvatarChange={setAvatarUrl}
+              userName={fullName}
+            />
 
             <div className="space-y-0.5">
               <h3 className="text-sm font-bold text-slate-900">{fullName}</h3>
               <p className="text-xs text-slate-500 font-medium">ID Técnico: {profile.technicianId} • Matriz</p>
             </div>
 
-            <div className="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-center gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  const url = prompt('Insira a URL da foto (JPG, PNG):', avatarUrl);
-                  if (url && url.trim()) setAvatarUrl(url.trim());
-                }}
-                className="inline-flex items-center gap-1 px-3 py-1 rounded-xl text-[#00344f] text-xs font-semibold bg-slate-100 hover:bg-slate-200"
-              >
-                <span className="material-symbols-outlined text-[16px]">upload</span>
-                <span>Fazer Upload</span>
-              </button>
-              <span className="text-[10px] text-slate-400">Formatos: JPG, PNG até 5MB</span>
-            </div>
+            <p className="mt-2.5 pt-2 border-t border-slate-100 text-[10px] text-slate-400">
+              Escolha uma imagem do celular ou computador. A foto é opcional.
+            </p>
           </section>
 
           {/* Dados Profissionais */}

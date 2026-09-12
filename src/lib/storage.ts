@@ -55,7 +55,9 @@ export function getHwidUnlockCode(hwid: string): string {
   return codeNum.toString();
 }
 
-export const INITIAL_PRODUCTS: Product[] = [
+export const INITIAL_PRODUCTS: Product[] = [];
+/*
+export const DEMO_PRODUCTS: Product[] = [
   {
     id: 'prod-1',
     name: 'PC Gamer Craft Ultra i5 12400F + RTX 4060',
@@ -177,6 +179,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     imageUrl: 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=600&auto=format&fit=crop&q=80',
   }
 ];
+*/
 
 export const INITIAL_CLIENTS: Client[] = [
   {
@@ -316,7 +319,7 @@ export const INITIAL_PROFILE: StoreProfile = {
   whatsappContact: '(47) 98861-1619',
   pixKey: '47988611619',
   technicianId: '#PC-8842',
-  avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&auto=format&fit=crop&q=80',
+  avatarUrl: '',
   licenseId: 'PC-CRAFT-X9192-BR',
   licensePlan: 'Plano Pro / Lojista Hardware',
   licenseExpiry: '18/02/2026',
@@ -498,7 +501,15 @@ export const StorageManager = {
   getProducts(): Product[] {
     try {
       const data = localStorage.getItem(STORAGE_KEYS.PRODUCTS);
-      if (data) return JSON.parse(data);
+      if (data) {
+        const products: Product[] = JSON.parse(data);
+        const defaultProductIds = new Set(['prod-1', 'prod-2', 'prod-3', 'prod-4', 'prod-5', 'prod-6']);
+        const cleanedProducts = products.filter(product => !defaultProductIds.has(product.id));
+        if (cleanedProducts.length !== products.length) {
+          localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(cleanedProducts));
+        }
+        return cleanedProducts;
+      }
     } catch {
       // ignore
     }
@@ -661,7 +672,14 @@ export const StorageManager = {
   getProfile(): StoreProfile {
     try {
       const data = localStorage.getItem(STORAGE_KEYS.PROFILE);
-      if (data) return JSON.parse(data);
+      if (data) {
+        const profile: StoreProfile = JSON.parse(data);
+        if (profile.avatarUrl?.includes('photo-1534528741775-53994a69daeb')) {
+          profile.avatarUrl = '';
+          this.saveProfile(profile);
+        }
+        return profile;
+      }
     } catch {
       // ignore
     }

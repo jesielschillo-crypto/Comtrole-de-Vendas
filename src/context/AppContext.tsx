@@ -25,7 +25,7 @@ const DEFAULT_ADMIN: AdminUser = {
   storeName: 'PC Craft - Montagem & Periféricos',
   phone: '(11) 99876-5432',
   pixKey: 'admin@pccraft.com.br',
-  avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=256&h=256&q=80',
+  avatarUrl: '',
   createdAt: '2026-01-01',
 };
 
@@ -122,7 +122,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         return list.map(u => ({
           ...u,
           name: cleanUserName(u.name),
-          avatarUrl: u.avatarUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=256&h=256&q=80',
+          avatarUrl: u.avatarUrl?.includes('photo-1535713875002-d1d0cf377fde') ? '' : u.avatarUrl || '',
         }));
       }
       return [DEFAULT_ADMIN];
@@ -140,7 +140,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         return {
           ...u,
           name: cleanUserName(u.name),
-          avatarUrl: u.avatarUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=256&h=256&q=80',
+          avatarUrl: u.avatarUrl?.includes('photo-1535713875002-d1d0cf377fde') ? '' : u.avatarUrl || '',
         };
       }
       return DEFAULT_ADMIN;
@@ -342,9 +342,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       name: cleanUserName(userData.name.trim()),
       username: cleanUsername,
       password: userData.password?.trim() || '',
-      avatarUrl:
-        userData.avatarUrl ||
-        'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=256&h=256&q=80',
+      avatarUrl: userData.avatarUrl || '',
       storeName: userData.storeName?.trim() || 'PC Craft',
       email: cleanEmail,
       phone: userData.phone?.trim() || '',
