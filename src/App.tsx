@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { StorageManager, DEFAULT_HWID } from './lib/storage';
 import { Product, Client, Sale, StoreProfile } from './types';
 import { Header } from './components/Header';
@@ -11,6 +11,21 @@ import { ProfileView } from './components/ProfileView';
 import { EditProfileModal } from './components/EditProfileModal';
 import { AdminRequestsModal } from './components/AdminRequestsModal';
 import { QuickApprovalScreen } from './components/QuickApprovalScreen';
+
+const cleanDemoDataOnFirstRun = () => {
+  if (typeof window === 'undefined' || localStorage.getItem('pc_craft_clean_slate_v1')) return;
+
+  localStorage.removeItem('pc_craft_products');
+  localStorage.removeItem('pc_craft_clients');
+  localStorage.removeItem('pc_craft_sales');
+  localStorage.removeItem('pc_craft_store_profile');
+  localStorage.removeItem('pc_craft_access_requests');
+  localStorage.removeItem('pc_craft_users');
+  localStorage.removeItem('pc_craft_terminal_state');
+  localStorage.setItem('pc_craft_clean_slate_v1', 'true');
+};
+
+cleanDemoDataOnFirstRun();
 
 export default function App() {
   // Verificação de URL para liberação com 1 clique do Jesiel

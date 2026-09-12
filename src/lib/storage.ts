@@ -325,32 +325,10 @@ export const INITIAL_PROFILE: StoreProfile = {
 };
 
 export const INITIAL_REQUESTS: AccessRequest[] = [
-  {
-    id: 'req-demo-1',
-    hwid: DEFAULT_HWID,
-    fullName: 'Jesiel Schillo (Terminal Balcão)',
-    email: 'jesielschillo@gmail.com',
-    whatsapp: '47988611619',
-    storeName: 'PC Craft Hardware - Matriz',
-    role: 'Administrador / Gestor',
-    requestedAt: new Date().toISOString(),
-    status: 'aprovado',
-    accessCode: MASTER_UNLOCK_CODE
-  }
+  
 ];
 
-export const INITIAL_USERS: UserAccount[] = [
-  {
-    id: 'user-admin-1',
-    username: 'jesiel',
-    email: 'jesielschillo@gmail.com',
-    passwordHash: '123456',
-    fullName: 'Jesiel Schillo',
-    phone: '47988611619',
-    role: 'Administrador',
-    createdAt: '2025-01-15'
-  }
-];
+export const INITIAL_USERS: UserAccount[] = [];
 
 // Helpers de Leitura e Escrita
 export const StorageManager = {
@@ -459,8 +437,8 @@ export const StorageManager = {
     } catch {
       // ignore
     }
-    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(INITIAL_USERS));
-    return INITIAL_USERS;
+    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify([]));
+    return [];
   },
 
   registerUser(userData: Omit<UserAccount, 'id' | 'createdAt'>): UserAccount {
@@ -524,8 +502,8 @@ export const StorageManager = {
     } catch {
       // ignore
     }
-    localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(INITIAL_PRODUCTS));
-    return INITIAL_PRODUCTS;
+    localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify([]));
+    return [];
   },
 
   saveProducts(products: Product[]) {
@@ -556,8 +534,8 @@ export const StorageManager = {
     } catch {
       // ignore
     }
-    localStorage.setItem(STORAGE_KEYS.CLIENTS, JSON.stringify(INITIAL_CLIENTS));
-    return INITIAL_CLIENTS;
+    localStorage.setItem(STORAGE_KEYS.CLIENTS, JSON.stringify([]));
+    return [];
   },
 
   saveClients(clients: Client[]) {
@@ -626,8 +604,8 @@ export const StorageManager = {
     } catch {
       // ignore
     }
-    localStorage.setItem(STORAGE_KEYS.SALES, JSON.stringify(INITIAL_SALES));
-    return INITIAL_SALES;
+    localStorage.setItem(STORAGE_KEYS.SALES, JSON.stringify([]));
+    return [];
   },
 
   addSale(sale: Omit<Sale, 'id' | 'date'>): Sale {

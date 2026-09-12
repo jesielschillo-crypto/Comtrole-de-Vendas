@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StorageManager, DEFAULT_HWID, MASTER_UNLOCK_CODE, SECONDARY_UNLOCK_CODE, ADMIN_WHATSAPP, ADMIN_WHATSAPP_DISPLAY, ADMIN_EMAIL } from '../lib/storage';
+import { StorageManager, ADMIN_WHATSAPP, ADMIN_WHATSAPP_DISPLAY, ADMIN_EMAIL } from '../lib/storage';
 import { AccessRequest, UserAccount } from '../types';
 
 interface LockScreenProps {
@@ -20,32 +20,32 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlocked, onOpenAdminP
   const [copiedHwid, setCopiedHwid] = useState<boolean>(false);
 
   // OTP State (6 dígitos)
-  const [otp, setOtp] = useState<string[]>(['8', '4', '9', '2', '1', '0']);
+  const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']);
   const [otpError, setOtpError] = useState<string>('');
   const [isValidating, setIsValidating] = useState<boolean>(false);
   const [statusMessage, setStatusMessage] = useState<string>('Código pronto para validação de segurança');
   const otpInputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
   // Cadastro de Usuário e Senha após liberação
-  const [newFullName, setNewFullName] = useState<string>('Jesiel Schillo');
-  const [newEmail, setNewEmail] = useState<string>('jesielschillo@gmail.com');
-  const [newPhone, setNewPhone] = useState<string>(ADMIN_WHATSAPP);
-  const [newUsername, setNewUsername] = useState<string>('jesiel');
-  const [newPassword, setNewPassword] = useState<string>('123456');
-  const [newConfirmPassword, setNewConfirmPassword] = useState<string>('123456');
+  const [newFullName, setNewFullName] = useState<string>('');
+  const [newEmail, setNewEmail] = useState<string>('');
+  const [newPhone, setNewPhone] = useState<string>('');
+  const [newUsername, setNewUsername] = useState<string>('');
+  const [newPassword, setNewPassword] = useState<string>('');
+  const [newConfirmPassword, setNewConfirmPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [accountError, setAccountError] = useState<string>('');
 
   // Login com usuário existente
-  const [loginIdentifier, setLoginIdentifier] = useState<string>('jesiel');
-  const [loginPassword, setLoginPassword] = useState<string>('123456');
+  const [loginIdentifier, setLoginIdentifier] = useState<string>('');
+  const [loginPassword, setLoginPassword] = useState<string>('');
   const [loginError, setLoginError] = useState<string>('');
 
   // Solicitação de Acesso
-  const [reqName, setReqName] = useState<string>('Jesiel Schillo');
-  const [reqEmail, setReqEmail] = useState<string>('jesielschillo@gmail.com');
-  const [reqPhone, setReqPhone] = useState<string>(ADMIN_WHATSAPP);
-  const [reqStore, setReqStore] = useState<string>('PC Craft Hardware');
+  const [reqName, setReqName] = useState<string>('');
+  const [reqEmail, setReqEmail] = useState<string>('');
+  const [reqPhone, setReqPhone] = useState<string>('');
+  const [reqStore, setReqStore] = useState<string>('');
   const [requestSent, setRequestSent] = useState<AccessRequest | null>(null);
 
   const fillQuickCode = (code: string) => {
@@ -414,24 +414,6 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlocked, onOpenAdminP
                 </p>
               </div>
 
-              {/* Botões de Preenchimento Rápido */}
-              <div className="flex flex-col sm:flex-row items-stretch gap-2 pt-1">
-                <button
-                  type="button"
-                  onClick={() => fillQuickCode(StorageManager.getHwidUnlockCode(hwid))}
-                  className="w-full sm:flex-1 py-2 px-3 bg-blue-50 hover:bg-blue-100 text-[#00658c] rounded-xl text-xs font-bold border border-blue-200 flex items-center justify-center gap-1.5 transition-colors"
-                >
-                  <span className="material-symbols-outlined text-[16px]">bolt</span>
-                  <span className="truncate">Código deste Aparelho ({StorageManager.getHwidUnlockCode(hwid)})</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => fillQuickCode(MASTER_UNLOCK_CODE)}
-                  className="py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold border border-slate-200 transition-colors shrink-0"
-                >
-                  Master ({MASTER_UNLOCK_CODE})
-                </button>
-              </div>
             </div>
 
             {/* Inserção do Código (6 Dígitos) */}
