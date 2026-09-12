@@ -33,3 +33,22 @@ export const supabase = isSupabaseConfigured()
 export function getDynamicSupabaseClient() {
   return supabase;
 }
+
+export async function signInWithGoogle() {
+  if (!isSupabaseConfigured()) {
+    return { error: new Error('Configure o Supabase antes de usar o login com Google.') };
+  }
+
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin },
+  });
+
+  return { error };
+}
+
+export async function getSupabaseSessionUser() {
+  if (!isSupabaseConfigured()) return null;
+  const { data } = await supabase.auth.getUser();
+  return data.user;
+}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StorageManager } from '../lib/storage';
+import { isSupabaseConfigured, signInWithGoogle } from '../lib/supabase';
 
 interface LockScreenProps {
   onUnlocked: () => void;
@@ -16,6 +17,7 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlocked, onOpenAdminP
   const [loginIdentifier, setLoginIdentifier] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [error, setError] = useState('');
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const handleRegister = (event: React.FormEvent) => {
     event.preventDefault();
@@ -71,6 +73,16 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlocked, onOpenAdminP
     setError('');
   };
 
+  const handleGoogleLogin = async () => {
+    setError('');
+    setIsGoogleLoading(true);
+    const result = await signInWithGoogle();
+    if (result.error) {
+      setError(result.error.message);
+      setIsGoogleLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30] flex items-center justify-center p-4 sm:p-6">
       <div className="w-full max-w-md">
@@ -124,6 +136,14 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlocked, onOpenAdminP
                 <span className="material-symbols-outlined text-[20px]">login</span>
                 Entrar no sistema
               </button>
+              <div className="relative py-1 text-center text-[11px] text-slate-400 before:absolute before:left-0 before:right-0 before:top-1/2 before:border-t before:border-slate-200">
+                <span className="relative bg-white px-2">ou</span>
+              </div>
+              <button type="button" onClick={handleGoogleLogin} disabled={isGoogleLoading || !isSupabaseConfigured()} className="w-full h-11 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-bold text-sm flex items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-50">
+                <span className="text-base font-black text-[#4285F4]">G</span>
+                {isGoogleLoading ? 'Conectando...' : 'Continuar com Google'}
+              </button>
+              {!isSupabaseConfigured() && <p className="text-center text-[10px] text-slate-400">Configure o Supabase para ativar o Google.</p>}
             </form>
           ) : (
             <form onSubmit={handleRegister} className="space-y-3.5">
@@ -137,6 +157,13 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlocked, onOpenAdminP
               <button type="submit" className="w-full h-12 bg-[#034c70] hover:bg-[#00344f] text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 mt-1">
                 <span className="material-symbols-outlined text-[20px]">person_add</span>
                 Cadastrar e entrar
+              </button>
+              <div className="relative py-1 text-center text-[11px] text-slate-400 before:absolute before:left-0 before:right-0 before:top-1/2 before:border-t before:border-slate-200">
+                <span className="relative bg-white px-2">ou</span>
+              </div>
+              <button type="button" onClick={handleGoogleLogin} disabled={isGoogleLoading || !isSupabaseConfigured()} className="w-full h-11 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-bold text-sm flex items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-50">
+                <span className="text-base font-black text-[#4285F4]">G</span>
+                {isGoogleLoading ? 'Conectando...' : 'Cadastrar com Google'}
               </button>
             </form>
           )}

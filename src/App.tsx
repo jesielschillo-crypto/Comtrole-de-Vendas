@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { hydrateStorageFromCloud, StorageManager } from './lib/storage';
-import { isSupabaseConfigured } from './lib/supabase';
+import { getSupabaseSessionUser, isSupabaseConfigured } from './lib/supabase';
 import { Product, Client, Sale, StoreProfile } from './types';
 import { Header } from './components/Header';
 import { Navigation } from './components/Navigation';
@@ -66,7 +66,23 @@ export default function App() {
     if (!isSupabaseConfigured()) return;
 
     let mounted = true;
-    void hydrateStorageFromCloud().finally(() => {
+    void (async () => {
+      await hydrateStorageFromCloud();
+      const authUser = await getSupabaseSessionUser();
+      if (authUser?.email) {
+        const fullName = authUser.user_metadata?.full_name || authUser.user_metadata?.name || authUser.email.split('@')[0];
+        const username = authUser.email.split('@')[0].toLowerCase().replace(/[^a-z0-9._-]/g, '');
+        const account = StorageManager.registerUser({
+          fullName,
+          email: authUser.email,
+          username,
+          passwordHash: '',
+          phone: '',
+          role: 'Administrador',
+        });
+        StorageManager.unlockTerminal(undefined, account);
+      }
+    })().finally(() => {
       if (!mounted) return;
       setTerminalState(StorageManager.getTerminalState());
       setProducts(StorageManager.getProducts());

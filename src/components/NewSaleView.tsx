@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Client, Product, Sale } from '../types';
+import { Client, PaymentScheduleItem, Product, Sale } from '../types';
 
 interface NewSaleViewProps {
   clients: Client[];
@@ -126,6 +126,21 @@ export const NewSaleView: React.FC<NewSaleViewProps> = ({
     ? Math.round((remainingAmount / remainingInstallments) * 100) / 100 
     : remainingAmount;
 
+  const paymentSchedule: PaymentScheduleItem[] = remainingAmount > 0 && paymentMethod === 'parcelado_loja'
+    ? Array.from({ length: remainingInstallments }, (_, index) => {
+        const dueDate = new Date(`${firstDueDate}T12:00:00`);
+        dueDate.setMonth(dueDate.getMonth() + index);
+        return {
+          installmentNumber: index + 1,
+          amount: index === remainingInstallments - 1
+            ? Math.round((remainingAmount - installmentValue * (remainingInstallments - 1)) * 100) / 100
+            : installmentValue,
+          dueDate: dueDate.toISOString().split('T')[0],
+          status: 'pending' as const,
+        };
+      })
+    : [];
+
   // Validação e avanço para Tela 2
   const handleGoToStep2 = (e: React.FormEvent) => {
     e.preventDefault();
@@ -198,6 +213,7 @@ export const NewSaleView: React.FC<NewSaleViewProps> = ({
       installmentsCount: actualInstallmentsCount,
       installmentValue: paymentMethod === 'parcelado_loja' ? installmentValue : 0,
       paidInstallments: paymentMethod === 'parcelado_loja' && cleanDownPayment > 0 ? 1 : actualInstallmentsCount,
+      paymentSchedule,
       status: paymentMethod === 'parcelado_loja' && remainingAmount > 0 ? 'pendente_pagamento' : 'concluido',
       notes: saleNotes || `Entrada de R$ ${cleanDownPayment.toLocaleString('pt-BR')}. Saldo de R$ ${remainingAmount.toLocaleString('pt-BR')} em ${remainingInstallments}x de R$ ${installmentValue.toLocaleString('pt-BR')}. 1º vencimento em ${firstDueDate}.`,
     };
@@ -675,6 +691,17 @@ export const NewSaleView: React.FC<NewSaleViewProps> = ({
                       <p className="text-[11px] text-slate-500 mt-0.5">
                         1ª Parcela para {new Date(firstDueDate + 'T12:00:00').toLocaleDateString('pt-BR')}
                       </p>
+                      <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-left">
+                        {paymentSchedule.map(item => (
+                          <div key={item.installmentNumber} className="flex items-center justify-between gap-2 rounded-lg bg-slate-50 px-2 py-1.5 text-[11px]">
+                            <span className="font-bold text-slate-600">{item.installmentNumber}ª parcela</span>
+                            <span className="text-right text-slate-700">
+                              R$ {item.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}<br />
+                              <strong className="text-[#00658c]">{new Date(`${item.dueDate}T12:00:00`).toLocaleDateString('pt-BR')}</strong>
+                            </span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   ) : (
                     <div className="p-2 bg-emerald-50 rounded-lg text-emerald-800 text-xs font-bold text-center border border-emerald-200">
@@ -749,9 +776,14 @@ export const NewSaleView: React.FC<NewSaleViewProps> = ({
                 <strong>Entrada Paga:</strong> R$ {completedSale.downPayment.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
               </p>
               {completedSale.paymentMethod === 'parcelado_loja' && remainingAmount > 0 ? (
-                <p className="text-amber-800 font-bold">
-                  <strong>Parcelamento:</strong> {remainingInstallments}x de R$ {installmentValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-                </p>
+                <div className="text-amber-800 font-bold">
+                  <p><strong>Parcelamento:</strong> {remainingInstallments}x de R$ {installmentValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                  {completedSale.paymentSchedule?.map(item => (
+                    <p key={item.installmentNumber} className="text-[11px] font-medium">
+                      {item.installmentNumber}ª parcela: {new Date(`${item.dueDate}T12:00:00`).toLocaleDateString('pt-BR')}
+                    </p>
+                  ))}
+                </div>
               ) : (
                 <p className="text-emerald-700 font-bold">
                   <strong>Condição:</strong> À vista / Quitado

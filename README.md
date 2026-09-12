@@ -7,7 +7,11 @@ Para compartilhar usuários, produtos, clientes, vendas e perfil entre aparelhos
 3. Copie `.env.example` para `.env` e preencha `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY`.
 4. Reinicie o servidor Vite.
 
+Para ativar o botão do Google, em Authentication > Providers > Google no Supabase, informe o Client ID e o Client Secret do Google Cloud. Em Authentication > URL Configuration, adicione a URL do app em Site URL e também a mesma URL em Redirect URLs.
+
 Quando a tabela estiver vazia, o app publica os dados locais existentes como migração inicial. Depois disso, cada gravação atualiza o estado na nuvem e um novo aparelho carrega esse estado antes de abrir o sistema.
+
+Vendas parceladas salvam `paymentSchedule` com número da parcela, valor, vencimento e status. O formulário calcula os vencimentos mensais a partir da primeira data escolhida e exibe o cronograma no recibo.
 
 O schema atual usa acesso público para acompanhar o login local existente. Para produção, configure Supabase Auth e políticas por usuário/empresa antes de expor dados reais.
 <div align="center">

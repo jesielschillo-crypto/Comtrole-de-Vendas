@@ -54,9 +54,18 @@ export interface Sale {
   installmentsCount: number;
   installmentValue: number;
   paidInstallments: number;
+  paymentSchedule?: PaymentScheduleItem[];
   date: string;
   status: 'concluido' | 'pendente_pagamento';
   notes?: string;
+}
+
+export interface PaymentScheduleItem {
+  installmentNumber: number;
+  amount: number;
+  dueDate: string;
+  status: 'pending' | 'paid' | 'overdue';
+  paidAt?: string;
 }
 
 export interface UserAccount {

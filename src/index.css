@@ -14,8 +14,21 @@
   main,
   header,
   section,
-  form {
+  form,
+  label,
+  button,
+  a,
+  input,
+  textarea,
+  select {
     min-width: 0;
+  }
+
+  label > input,
+  label > textarea,
+  label > select {
+    display: block;
+    max-width: 100%;
   }
 
   h1,
@@ -29,6 +42,17 @@
   span {
     overflow-wrap: break-word;
     word-break: normal;
+  }
+
+  button,
+  a {
+    text-align: center;
+  }
+
+  input,
+  textarea,
+  select {
+    max-width: 100%;
   }
 
   :root {
