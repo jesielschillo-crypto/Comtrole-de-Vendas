@@ -57,18 +57,26 @@ export async function hydrateStorageFromCloud(): Promise<boolean> {
   }
 
   const rows = (data || []) as Array<{ key: CloudStateKey; value: unknown }>;
-  if (rows.length === 0) {
-    await syncStorageToCloud();
-    return false;
-  }
+  const cloudValues = new Map(rows.map(row => [row.key, row.value]));
+  const emptyValues: Record<CloudStateKey, unknown> = {
+    PRODUCTS: [],
+    CLIENTS: [],
+    SALES: [],
+    REQUESTS: [],
+    PROFILE: INITIAL_PROFILE,
+    USERS: [],
+  };
 
-  rows.forEach(row => {
-    if (CLOUD_STATE_KEYS.includes(row.key)) {
-      localStorage.setItem(STORAGE_KEYS[row.key], JSON.stringify(row.value));
-    }
+  CLOUD_STATE_KEYS.forEach(key => {
+    localStorage.setItem(
+      STORAGE_KEYS[key],
+      JSON.stringify(cloudValues.has(key) ? cloudValues.get(key) : emptyValues[key]),
+    );
   });
 
-  return true;
+  if (rows.length === 0) await syncStorageToCloud();
+
+  return rows.length > 0;
 }
 
 export async function syncStorageToCloud() {

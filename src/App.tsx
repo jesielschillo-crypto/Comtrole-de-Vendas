@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { hydrateStorageFromCloud, StorageManager } from './lib/storage';
+import { hydrateStorageFromCloud, StorageManager, syncStorageToCloud } from './lib/storage';
 import { isSupabaseConfigured } from './lib/supabase';
 import { Product, Client, Sale, StoreProfile } from './types';
 import { Header } from './components/Header';
@@ -16,7 +16,7 @@ import { ProductsView } from './components/ProductsView';
 import { ProductRegistrationView } from './components/ProductRegistrationView';
 
 const cleanDemoDataOnFirstRun = () => {
-  if (typeof window === 'undefined' || localStorage.getItem('pc_craft_empty_delivery_v2')) return;
+  if (typeof window === 'undefined' || localStorage.getItem('pc_craft_empty_delivery_v3')) return false;
 
   localStorage.removeItem('pc_craft_products');
   localStorage.removeItem('pc_craft_clients');
@@ -25,10 +25,17 @@ const cleanDemoDataOnFirstRun = () => {
   localStorage.removeItem('pc_craft_access_requests');
   localStorage.removeItem('pc_craft_users');
   localStorage.removeItem('pc_craft_terminal_state');
-  localStorage.setItem('pc_craft_empty_delivery_v2', 'true');
+  localStorage.removeItem('pccraft_clients');
+  localStorage.removeItem('pccraft_inventory');
+  localStorage.removeItem('pccraft_sales');
+  localStorage.removeItem('pccraft_users');
+  localStorage.removeItem('pccraft_auth_user');
+  localStorage.removeItem('pccraft_authenticated');
+  localStorage.setItem('pc_craft_empty_delivery_v3', 'true');
+  return true;
 };
 
-cleanDemoDataOnFirstRun();
+const shouldResetCloudForDelivery = cleanDemoDataOnFirstRun();
 
 export default function App() {
   // Verificação de URL para liberação com 1 clique do Jesiel
@@ -67,7 +74,11 @@ export default function App() {
 
     let mounted = true;
     void (async () => {
-      await hydrateStorageFromCloud();
+      if (shouldResetCloudForDelivery) {
+        await syncStorageToCloud();
+      } else {
+        await hydrateStorageFromCloud();
+      }
     })().finally(() => {
       if (!mounted) return;
       setTerminalState(StorageManager.getTerminalState());
