@@ -1,4 +1,5 @@
 import React from 'react';
+import { BellRing, CalendarDays, CheckCircle2, ChevronRight, CreditCard, MessageCircle, ReceiptText, TrendingUp, UserPlus, Users } from 'lucide-react';
 import { Client, Product, Sale } from '../types';
 
 interface DashboardViewProps {
@@ -45,7 +46,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           className="h-22 bg-[#034c70] hover:bg-[#00344f] active:scale-[0.98] text-white rounded-2xl p-3 flex flex-col justify-between shadow-xs transition-all text-left cursor-pointer min-w-0"
         >
           <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-[20px] text-white">person_add_alt_1</span>
+            <UserPlus size={20} />
           </div>
           <div className="min-w-0">
             <span className="text-xs sm:text-sm font-extrabold tracking-tight block truncate">
@@ -63,7 +64,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           className="h-22 bg-white hover:bg-slate-50 active:scale-[0.98] text-slate-800 border border-slate-200 rounded-2xl p-3 flex flex-col justify-between shadow-xs transition-all text-left cursor-pointer min-w-0"
         >
           <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#00658c] flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-[20px]">groups</span>
+            <Users size={20} />
           </div>
           <div className="min-w-0">
             <span className="text-xs sm:text-sm font-extrabold tracking-tight text-[#00344f] block truncate">
@@ -81,7 +82,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 min-w-0">
             <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#00658c] flex items-center justify-center shrink-0">
-              <span className="material-symbols-outlined text-[20px]">payments</span>
+              <CreditCard size={20} />
             </div>
             <div className="min-w-0">
               <h2 className="text-xs uppercase font-bold text-slate-600 tracking-wider truncate">
@@ -93,7 +94,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </div>
           </div>
           <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200 flex items-center gap-1 shrink-0">
-            <span className="material-symbols-outlined text-[14px]">trending_up</span> +18%
+            <TrendingUp size={14} /> +18%
           </span>
         </div>
 
@@ -126,7 +127,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <span className="text-[10px] uppercase font-bold text-amber-800 truncate">A Receber</span>
-              <span className="material-symbols-outlined text-[18px] text-amber-600 shrink-0">calendar_month</span>
+              <CalendarDays size={18} className="shrink-0 text-amber-600" />
             </div>
             <div className="text-base sm:text-lg font-extrabold text-amber-900 tracking-tight truncate">
               R$ {Math.round(totalPending).toLocaleString('pt-BR')}
@@ -144,7 +145,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <span className="text-[10px] uppercase font-bold text-emerald-800 truncate">Já Recebido</span>
-              <span className="material-symbols-outlined text-[18px] text-emerald-600 shrink-0">check_circle</span>
+              <CheckCircle2 size={18} className="shrink-0 text-emerald-600" />
             </div>
             <div className="text-base sm:text-lg font-extrabold text-emerald-800 tracking-tight truncate">
               R$ {Math.round(totalReceived).toLocaleString('pt-BR')}
@@ -162,7 +163,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       <section className="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-rose-500 text-[20px]">notification_important</span>
+            <BellRing size={20} className="text-rose-500" />
             <h3 className="text-xs uppercase font-bold text-slate-800">Radar de Cobrança</h3>
           </div>
           <span className="px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 text-[11px] font-bold border border-rose-200">
@@ -202,14 +203,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     className="p-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-xs transition-transform active:scale-95 flex items-center justify-center cursor-pointer"
                     title="Cobrar via WhatsApp"
                   >
-                    <span className="material-symbols-outlined text-[18px]">chat</span>
+                    <MessageCircle size={18} />
                   </button>
                   <button
                     onClick={() => onNavigate('clientes')}
                     className="p-2 bg-white hover:bg-slate-100 text-slate-600 rounded-xl border border-slate-200 transition-colors cursor-pointer"
                     title="Ver detalhes"
                   >
-                    <span className="material-symbols-outlined text-[18px]">chevron_right</span>
+                    <ChevronRight size={18} />
                   </button>
                 </div>
               </div>
@@ -222,7 +223,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       <section className="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#00658c] text-[20px]">receipt_long</span>
+            <ReceiptText size={20} className="text-[#00658c]" />
             <h3 className="text-xs uppercase font-bold text-slate-800">Vendas &amp; Parcelamentos Recentes</h3>
           </div>
           <button

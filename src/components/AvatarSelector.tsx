@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { Camera, ImagePlus, UserCircle } from 'lucide-react';
 import { PRESET_AVATARS, resizeImageFile } from '../utils/avatarUtils';
 
 interface AvatarSelectorProps {
@@ -48,7 +49,7 @@ export const AvatarSelector: React.FC<AvatarSelectorProps> = ({
     <div className="space-y-3 bg-[#f8fafc] p-4 rounded-2xl border border-[#e2e8f0]">
       <div className="flex items-center justify-between">
         <label className="font-body text-[11px] text-[#475569] uppercase tracking-wider font-bold flex items-center gap-1.5">
-          <span className="material-symbols-outlined text-[16px] text-[#006194]">account_circle</span>
+          <UserCircle size={16} className="text-[#006194]" />
           <span>Foto de Perfil do Usuário</span>
         </label>
         {currentAvatarUrl && (
@@ -89,7 +90,7 @@ export const AvatarSelector: React.FC<AvatarSelectorProps> = ({
             className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-[#006194] text-white flex items-center justify-center shadow-md hover:bg-[#0284c7] transition-all"
             title="Carregar foto do aparelho"
           >
-            <span className="material-symbols-outlined text-[14px]">photo_camera</span>
+            <Camera size={14} />
           </button>
         </div>
 
@@ -109,9 +110,7 @@ export const AvatarSelector: React.FC<AvatarSelectorProps> = ({
             onClick={() => fileInputRef.current?.click()}
             className="w-full px-3 py-2 bg-white border border-[#cbd5e1] hover:bg-[#f1f5f9] text-[#0f172a] text-xs font-bold rounded-xl flex items-center justify-center gap-2 transition-colors shadow-2xs"
           >
-            <span className="material-symbols-outlined text-[18px] text-[#006194]">
-              upload
-            </span>
+            <ImagePlus size={18} className="text-[#006194]" />
             <span>
               {isProcessing ? 'Carregando foto...' : 'Escolher foto da galeria ou PC'}
             </span>

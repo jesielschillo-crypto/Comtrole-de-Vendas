@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { Camera, Download, LockKeyhole, LogOut, Mail, Pencil, Phone, ShieldCheck } from 'lucide-react';
 import { StoreProfile, Client, Sale, Product } from '../types';
-import { StorageManager, ADMIN_WHATSAPP, ADMIN_WHATSAPP_DISPLAY } from '../lib/storage';
+import { ADMIN_WHATSAPP, ADMIN_WHATSAPP_DISPLAY } from '../lib/storage';
 
 interface ProfileViewProps {
   profile: StoreProfile;
@@ -12,184 +13,75 @@ interface ProfileViewProps {
   onSyncSupabase?: () => void;
 }
 
-export const ProfileView: React.FC<ProfileViewProps> = ({
-  profile,
-  clients,
-  sales,
-  products,
-  onOpenEditModal,
-  onLockTerminal,
-}) => {
-  const [copiedHwid, setCopiedHwid] = useState<boolean>(false);
-  const deviceHwid = StorageManager.getDeviceHwid();
+export const ProfileView: React.FC<ProfileViewProps> = ({ profile, clients, sales, products, onOpenEditModal, onLockTerminal }) => {
+  const [copied, setCopied] = useState(false);
+  const initials = profile.fullName.split(' ').map(part => part[0]).slice(0, 2).join('').toUpperCase();
 
-  const handleCopyHwid = () => {
-    navigator.clipboard.writeText(deviceHwid);
-    setCopiedHwid(true);
-    setTimeout(() => setCopiedHwid(false), 2000);
+  const handleCopyId = async () => {
+    await navigator.clipboard.writeText(profile.technicianId);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1800);
   };
 
   const handleExportBackup = () => {
-    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(
-      JSON.stringify({ profile, clients, sales, products }, null, 2)
-    );
-    const downloadAnchor = document.createElement('a');
-    downloadAnchor.setAttribute('href', dataStr);
-    downloadAnchor.setAttribute('download', `backup-pccraft-${new Date().toISOString().split('T')[0]}.json`);
-    document.body.appendChild(downloadAnchor);
-    downloadAnchor.click();
-    downloadAnchor.remove();
+    const content = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify({ profile, clients, sales, products }, null, 2))}`;
+    const link = document.createElement('a');
+    link.href = content;
+    link.download = `backup-pccraft-${new Date().toISOString().slice(0, 10)}.json`;
+    link.click();
   };
 
   return (
-    <div className="space-y-4 pb-28 pt-16 px-4 max-w-md mx-auto w-full">
-      {/* CARD 1: PERFIL BÁSICO (Simples e Direto) */}
-      <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs space-y-4">
-        <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-          <div className="flex items-center gap-3.5">
-            <div className="relative">
-              <div className="w-14 h-14 rounded-2xl overflow-hidden border border-slate-200 shadow-xs bg-slate-100">
-                <img
-                  src={profile.avatarUrl}
-                  alt={profile.fullName}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <span className="absolute -bottom-1 -right-1 bg-emerald-600 text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full ring-2 ring-white">
-                Ativo
-              </span>
-            </div>
-
-            <div>
-              <h2 className="text-base font-bold text-slate-900 leading-snug">{profile.fullName}</h2>
-              <p className="text-xs text-[#034c70] font-semibold">{profile.role}</p>
-              <p className="text-[11px] text-slate-500 flex items-center gap-1 mt-0.5">
-                <span className="material-symbols-outlined text-[13px] text-slate-400">store</span>
-                {profile.storeBranch}
-              </p>
-            </div>
-          </div>
-
-          <button
-            onClick={onOpenEditModal}
-            className="p-2 text-slate-400 hover:text-[#034c70] rounded-xl hover:bg-slate-50 transition-colors"
-            title="Editar Perfil"
-          >
-            <span className="material-symbols-outlined text-[20px]">edit</span>
-          </button>
+    <div className="mx-auto w-full max-w-lg space-y-4 px-4 pb-28 pt-20">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wider text-[#00658c]">Minha conta</p>
+          <h1 className="text-2xl font-bold text-slate-900">Perfil</h1>
         </div>
-
-        {/* Informações Básicas de Contato e Chave Pix */}
-        <div className="space-y-2.5 text-xs">
-          <div className="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border border-slate-100">
-            <span className="text-slate-500 flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[16px] text-emerald-600">phone_android</span>
-              WhatsApp
-            </span>
-            <span className="font-semibold text-slate-800">{profile.whatsappContact || ADMIN_WHATSAPP_DISPLAY}</span>
-          </div>
-
-          <div className="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border border-slate-100">
-            <span className="text-slate-500 flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[16px] text-[#00658c]">mail</span>
-              E-mail
-            </span>
-            <span className="font-semibold text-slate-800 truncate max-w-[180px]">{profile.corporateEmail}</span>
-          </div>
-        </div>
-
-        <button
-          onClick={onOpenEditModal}
-          className="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-[#034c70] font-bold text-xs flex items-center justify-center gap-1.5 transition-colors"
-        >
-          <span className="material-symbols-outlined text-[16px]">edit</span>
-          <span>Editar Informações do Perfil</span>
+        <button type="button" onClick={onOpenEditModal} className="flex items-center gap-2 rounded-xl bg-[#034c70] px-3 py-2 text-xs font-bold text-white hover:bg-[#00344f]">
+          <Pencil size={15} />Editar
         </button>
       </div>
 
-      {/* CARD 2: LICENÇA E PROTEÇÃO DO APARELHO (Anti-Repasse) */}
-      <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs space-y-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#034c70] text-[20px]">verified</span>
-            <span className="text-xs font-bold text-slate-900">Licença do Computador</span>
+      <section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
+        <div className="flex items-center gap-4">
+          <div className="relative flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-[#034c70] text-xl font-black text-white ring-4 ring-sky-100">
+            {profile.avatarUrl ? <img src={profile.avatarUrl} alt={profile.fullName} className="h-full w-full object-cover" /> : initials}
+            <span className="absolute bottom-1 right-1 h-3 w-3 rounded-full border-2 border-white bg-emerald-500" />
           </div>
-          <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">
-            Ativa neste Aparelho
-          </span>
+          <div className="min-w-0">
+            <h2 className="truncate text-lg font-bold text-slate-900">{profile.fullName}</h2>
+            <p className="mt-0.5 text-sm text-slate-500">{profile.role}</p>
+            <p className="mt-2 flex items-center gap-1.5 text-xs font-semibold text-emerald-700"><ShieldCheck size={14} /> Conta ativa</p>
+          </div>
         </div>
 
-        <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
-          <div className="flex items-center justify-between text-xs">
-            <span className="text-slate-500">Hardware ID:</span>
-            <div className="flex items-center gap-1.5">
-              <span className="font-mono font-bold text-slate-900 bg-white px-2 py-0.5 rounded border border-slate-200 text-[11px]">
-                {deviceHwid}
-              </span>
-              <button
-                onClick={handleCopyHwid}
-                className="text-xs text-[#00658c] hover:underline font-semibold"
-                title="Copiar ID"
-              >
-                {copiedHwid ? 'Copiado!' : 'Copiar'}
-              </button>
-            </div>
-          </div>
-          <p className="text-[10px] text-slate-500 leading-relaxed">
-            🔒 Licença individual e intransferível vinculada a este computador. O repasse da chave para outros computadores é bloqueado automaticamente.
-          </p>
+        <div className="mt-5 space-y-2 border-t border-slate-100 pt-4">
+          <div className="flex items-center gap-3 rounded-xl bg-slate-50 p-3 text-sm"><Mail size={17} className="shrink-0 text-[#00658c]" /><span className="truncate text-slate-700">{profile.corporateEmail}</span></div>
+          <div className="flex items-center gap-3 rounded-xl bg-slate-50 p-3 text-sm"><Phone size={17} className="shrink-0 text-emerald-600" /><span className="text-slate-700">{profile.whatsappContact || ADMIN_WHATSAPP_DISPLAY}</span></div>
         </div>
-      </div>
+      </section>
 
-      {/* CARD 3: AÇÕES ESSENCIAIS */}
-      <div className="space-y-2 pt-1">
-        {/* Exportar Backup */}
-        <button
-          onClick={handleExportBackup}
-          className="w-full p-3 bg-white hover:bg-slate-50 rounded-xl border border-slate-200 shadow-xs flex items-center justify-between text-left text-xs transition-colors"
-        >
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#00658c] flex items-center justify-center">
-              <span className="material-symbols-outlined text-[18px]">download</span>
-            </div>
-            <div>
-              <p className="font-bold text-slate-900">Fazer Backup dos Dados</p>
-              <p className="text-[10px] text-slate-500">Baixar arquivo JSON com vendas e clientes</p>
-            </div>
+      <section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <h2 className="text-sm font-bold text-slate-900">Aparelho atual</h2>
+            <p className="mt-1 text-xs text-slate-500">Identificação deste dispositivo</p>
           </div>
-          <span className="material-symbols-outlined text-slate-400 text-[18px]">chevron_right</span>
+          <LockKeyhole size={20} className="text-slate-400" />
+        </div>
+        <button type="button" onClick={handleCopyId} className="mt-4 flex w-full items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-left">
+          <span className="font-mono text-xs font-bold text-slate-700">{profile.technicianId}</span>
+          <span className="text-xs font-bold text-[#00658c]">{copied ? 'Copiado' : 'Copiar'}</span>
         </button>
+      </section>
 
-        {/* Suporte WhatsApp */}
-        <a
-          href={`https://wa.me/55${ADMIN_WHATSAPP}?text=${encodeURIComponent(
-            `Olá Jesiel, preciso de suporte no sistema PC Craft Hardware (Hardware ID: ${deviceHwid}).`
-          )}`}
-          target="_blank"
-          rel="noreferrer"
-          className="w-full p-3 bg-white hover:bg-slate-50 rounded-xl border border-slate-200 shadow-xs flex items-center justify-between text-left text-xs transition-colors"
-        >
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-              <span className="material-symbols-outlined text-[18px]">chat</span>
-            </div>
-            <div>
-              <p className="font-bold text-slate-900">Suporte no WhatsApp</p>
-              <p className="text-[10px] text-slate-500">Falar com Jesiel ({ADMIN_WHATSAPP_DISPLAY})</p>
-            </div>
-          </div>
-          <span className="material-symbols-outlined text-slate-400 text-[18px]">chevron_right</span>
-        </a>
-
-        {/* Bloquear Terminal */}
-        <button
-          onClick={onLockTerminal}
-          className="w-full p-3 bg-rose-50 hover:bg-rose-100/70 text-rose-700 rounded-xl border border-rose-200 flex items-center justify-center gap-2 text-xs font-bold transition-colors mt-2"
-        >
-          <span className="material-symbols-outlined text-[18px]">lock</span>
-          <span>Bloquear Terminal / Sair</span>
-        </button>
-      </div>
+      <section className="space-y-2">
+        <button type="button" onClick={onOpenEditModal} className="flex w-full items-center gap-3 rounded-2xl bg-white p-4 text-left shadow-sm ring-1 ring-slate-200 hover:bg-slate-50"><Camera size={19} className="text-[#00658c]" /><span><strong className="block text-sm text-slate-900">Foto e dados da conta</strong><small className="text-xs text-slate-500">Atualizar nome, e-mail ou foto de perfil</small></span></button>
+        <button type="button" onClick={handleExportBackup} className="flex w-full items-center gap-3 rounded-2xl bg-white p-4 text-left shadow-sm ring-1 ring-slate-200 hover:bg-slate-50"><Download size={19} className="text-[#00658c]" /><span><strong className="block text-sm text-slate-900">Baixar backup</strong><small className="text-xs text-slate-500">Exportar clientes, vendas e produtos</small></span></button>
+        <a href={`https://wa.me/55${ADMIN_WHATSAPP}`} target="_blank" rel="noreferrer" className="flex w-full items-center gap-3 rounded-2xl bg-white p-4 text-left shadow-sm ring-1 ring-slate-200 hover:bg-slate-50"><Phone size={19} className="text-emerald-600" /><span><strong className="block text-sm text-slate-900">Suporte</strong><small className="text-xs text-slate-500">Falar pelo WhatsApp</small></span></a>
+        <button type="button" onClick={onLockTerminal} className="flex w-full items-center justify-center gap-2 rounded-2xl bg-rose-50 p-4 text-sm font-bold text-rose-700 ring-1 ring-rose-200 hover:bg-rose-100"><LogOut size={18} />Sair da conta</button>
+      </section>
     </div>
   );
 };

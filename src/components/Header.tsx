@@ -1,4 +1,5 @@
 import React from 'react';
+import { Lock, ShieldCheck, UserCircle } from 'lucide-react';
 import { StoreProfile } from '../types';
 
 interface HeaderProps {
@@ -43,7 +44,7 @@ export const Header: React.FC<HeaderProps> = ({
     <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4 py-2.5 bg-white border-b border-slate-200 shadow-xs">
       <div className="flex items-center gap-2.5">
         <div className="w-10 h-10 rounded-xl bg-[#034c70] flex items-center justify-center text-[#5dc6ff] shadow-sm shrink-0">
-          <span className="material-symbols-outlined text-[22px]">memory</span>
+          <span className="text-lg font-black">PC</span>
         </div>
         <div className="leading-tight min-w-0">
           <h1 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight flex items-center gap-1.5 truncate">
@@ -68,7 +69,7 @@ export const Header: React.FC<HeaderProps> = ({
           title="Painel de Solicitações de Acesso ADM"
           className="relative p-2 text-slate-600 hover:text-[#034c70] hover:bg-slate-100 rounded-xl transition-all"
         >
-          <span className="material-symbols-outlined text-[22px]">admin_panel_settings</span>
+          <ShieldCheck size={21} />
           {pendingRequestsCount > 0 && (
             <span className="absolute 0 top-1 right-1 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white"></span>
           )}
@@ -80,7 +81,7 @@ export const Header: React.FC<HeaderProps> = ({
           title="Bloquear Terminal / Trocar Usuário"
           className="relative p-2 text-slate-600 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all"
         >
-          <span className="material-symbols-outlined text-[22px]">lock</span>
+          <Lock size={20} />
         </button>
 
         {/* Avatar do Usuário */}
@@ -90,11 +91,11 @@ export const Header: React.FC<HeaderProps> = ({
           title="Ver Perfil"
         >
           <div className="w-9 h-9 rounded-full overflow-hidden ring-2 ring-[#00658c]/40 shadow-xs bg-slate-100">
-            <img
-              src={profile.avatarUrl}
-              alt={profile.fullName}
-              className="w-full h-full object-cover"
-            />
+            {profile.avatarUrl ? (
+              <img src={profile.avatarUrl} alt={profile.fullName} className="w-full h-full object-cover" />
+            ) : (
+              <UserCircle className="h-full w-full p-1 text-slate-400" />
+            )}
           </div>
           <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full"></span>
         </button>

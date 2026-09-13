@@ -1,4 +1,5 @@
 import React from 'react';
+import { Contact, Grid2X2, Package, ShoppingCart, UserRound } from 'lucide-react';
 
 interface NavigationProps {
   currentTab: string;
@@ -12,22 +13,23 @@ export const Navigation: React.FC<NavigationProps> = ({
   pendingClientsCount = 0,
 }) => {
   const tabs = [
-    { id: 'inicio', label: 'Início', icon: 'grid_view' },
-    { id: 'estoque', label: 'Estoque', icon: 'inventory_2' },
-    { id: 'nova-venda', label: 'Nova Venda', icon: 'shopping_cart' },
+    { id: 'inicio', label: 'Início', icon: Grid2X2 },
+    { id: 'estoque', label: 'Estoque', icon: Package },
+    { id: 'nova-venda', label: 'Nova Venda', icon: ShoppingCart },
     {
       id: 'clientes',
       label: 'Clientes',
-      icon: 'contacts',
+      icon: Contact,
       badge: pendingClientsCount > 0 ? pendingClientsCount : undefined,
     },
-    { id: 'perfil', label: 'Perfil', icon: 'person' },
+    { id: 'perfil', label: 'Perfil', icon: UserRound },
   ];
 
   return (
     <nav className="fixed bottom-0 left-0 w-full z-40 flex justify-around items-center h-16 px-3 bg-white border-t border-slate-200 pb-safe shadow-[0_-4px_12px_rgba(3,76,112,0.08)]">
       {tabs.map((tab) => {
         const isActive = currentTab === tab.id;
+        const Icon = tab.icon;
         return (
           <button
             key={tab.id}
@@ -40,12 +42,7 @@ export const Navigation: React.FC<NavigationProps> = ({
             }`}
           >
             <div className="relative">
-              <span
-                className="material-symbols-outlined text-[23px]"
-                style={isActive ? { fontVariationSettings: "'FILL' 1" } : undefined}
-              >
-                {tab.icon}
-              </span>
+              <Icon size={23} strokeWidth={isActive ? 2.6 : 2} />
               {tab.badge && (
                 <span className="absolute -top-1 -right-2 bg-rose-500 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full min-w-4 text-center leading-tight">
                   {tab.badge}

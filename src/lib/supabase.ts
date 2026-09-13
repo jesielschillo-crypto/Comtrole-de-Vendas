@@ -52,3 +52,14 @@ export async function getSupabaseSessionUser() {
   const { data } = await supabase.auth.getUser();
   return data.user;
 }
+
+export async function sendPasswordResetEmail(email: string) {
+  if (!isSupabaseConfigured()) {
+    return { error: new Error('Configure o Supabase para redefinir a senha por e-mail.') };
+  }
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin,
+  });
+  return { error };
+}
