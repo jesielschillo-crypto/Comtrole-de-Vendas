@@ -49,8 +49,8 @@ export async function signInWithGoogle() {
 
 export async function getSupabaseSessionUser() {
   if (!isSupabaseConfigured()) return null;
-  const { data } = await supabase.auth.getUser();
-  return data.user;
+  const { data } = await supabase.auth.getSession();
+  return data.session?.user || null;
 }
 
 export async function sendPasswordResetEmail(email: string) {

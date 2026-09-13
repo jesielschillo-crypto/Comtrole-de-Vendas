@@ -16,7 +16,7 @@ import { ProductsView } from './components/ProductsView';
 import { ProductRegistrationView } from './components/ProductRegistrationView';
 
 const cleanDemoDataOnFirstRun = () => {
-  if (typeof window === 'undefined' || localStorage.getItem('pc_craft_clean_slate_v1')) return;
+  if (typeof window === 'undefined' || localStorage.getItem('pc_craft_empty_delivery_v1')) return;
 
   localStorage.removeItem('pc_craft_products');
   localStorage.removeItem('pc_craft_clients');
@@ -25,7 +25,7 @@ const cleanDemoDataOnFirstRun = () => {
   localStorage.removeItem('pc_craft_access_requests');
   localStorage.removeItem('pc_craft_users');
   localStorage.removeItem('pc_craft_terminal_state');
-  localStorage.setItem('pc_craft_clean_slate_v1', 'true');
+  localStorage.setItem('pc_craft_empty_delivery_v1', 'true');
 };
 
 cleanDemoDataOnFirstRun();
@@ -71,7 +71,12 @@ export default function App() {
       const authUser = await getSupabaseSessionUser();
       if (authUser?.email) {
         const fullName = authUser.user_metadata?.full_name || authUser.user_metadata?.name || authUser.email.split('@')[0];
-        const username = authUser.email.split('@')[0].toLowerCase().replace(/[^a-z0-9._-]/g, '');
+        const username = fullName
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '.')
+          .replace(/^\.|\.$/g, '') || `usuario.${Date.now()}`;
         const account = StorageManager.registerUser({
           fullName,
           email: authUser.email,
@@ -81,6 +86,10 @@ export default function App() {
           role: 'Administrador',
         });
         StorageManager.unlockTerminal(undefined, account);
+
+        if (window.location.search.includes('code=') || window.location.hash.includes('access_token')) {
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
       }
     })().finally(() => {
       if (!mounted) return;

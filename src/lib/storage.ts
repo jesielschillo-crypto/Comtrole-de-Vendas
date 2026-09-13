@@ -12,7 +12,8 @@ const STORAGE_KEYS = {
   DEVICE_HWID: 'pc_craft_device_hwid',
 };
 
-const CLOUD_STATE_TABLE = 'app_state';
+// Nova versão começa vazia para a entrega ao cliente e não lê o banco antigo.
+const CLOUD_STATE_TABLE = 'app_state_client_v1';
 const CLOUD_STATE_KEYS = [
   'PRODUCTS',
   'CLIENTS',
