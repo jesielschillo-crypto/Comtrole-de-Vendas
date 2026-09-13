@@ -28,29 +28,10 @@ if (!isSupabaseConfigured()) {
 
 export const supabase = isSupabaseConfigured()
   ? createClient(supabaseUrl, supabaseAnonKey)
-  : (noopSupabaseClient as ReturnType<typeof createClient>);
+  : (noopSupabaseClient as unknown as ReturnType<typeof createClient>);
 
 export function getDynamicSupabaseClient() {
   return supabase;
-}
-
-export async function signInWithGoogle() {
-  if (!isSupabaseConfigured()) {
-    return { error: new Error('Configure o Supabase antes de usar o login com Google.') };
-  }
-
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
-    options: { redirectTo: window.location.origin },
-  });
-
-  return { error };
-}
-
-export async function getSupabaseSessionUser() {
-  if (!isSupabaseConfigured()) return null;
-  const { data } = await supabase.auth.getSession();
-  return data.session?.user || null;
 }
 
 export async function sendPasswordResetEmail(email: string) {

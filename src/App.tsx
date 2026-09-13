@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { hydrateStorageFromCloud, StorageManager } from './lib/storage';
-import { getSupabaseSessionUser, isSupabaseConfigured } from './lib/supabase';
+import { isSupabaseConfigured } from './lib/supabase';
 import { Product, Client, Sale, StoreProfile } from './types';
 import { Header } from './components/Header';
 import { Navigation } from './components/Navigation';
@@ -68,29 +68,6 @@ export default function App() {
     let mounted = true;
     void (async () => {
       await hydrateStorageFromCloud();
-      const authUser = await getSupabaseSessionUser();
-      if (authUser?.email) {
-        const fullName = authUser.user_metadata?.full_name || authUser.user_metadata?.name || authUser.email.split('@')[0];
-        const username = fullName
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, '.')
-          .replace(/^\.|\.$/g, '') || `usuario.${Date.now()}`;
-        const account = StorageManager.registerUser({
-          fullName,
-          email: authUser.email,
-          username,
-          passwordHash: '',
-          phone: '',
-          role: 'Administrador',
-        });
-        StorageManager.unlockTerminal(undefined, account);
-
-        if (window.location.search.includes('code=') || window.location.hash.includes('access_token')) {
-          window.history.replaceState({}, document.title, window.location.pathname);
-        }
-      }
     })().finally(() => {
       if (!mounted) return;
       setTerminalState(StorageManager.getTerminalState());
