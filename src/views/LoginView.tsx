@@ -115,7 +115,7 @@ export const LoginView: React.FC = () => {
         username: cleanUser,
         password: regPassword,
         avatarUrl: regAvatarUrl || undefined,
-        storeName: 'PC Craft',
+        storeName: 'VTECH',
       });
 
       setIsLoading(false);
@@ -138,12 +138,10 @@ export const LoginView: React.FC = () => {
       <div className="w-full max-w-md space-y-6">
         {/* Brand Header */}
         <div className="flex flex-col items-center text-center space-y-2">
-          <div className="w-16 h-16 rounded-2xl bg-[#006194] text-white flex items-center justify-center shadow-lg shadow-[#006194]/25">
-            <span className="material-symbols-outlined text-[36px]">memory</span>
-          </div>
+          <img src="/vtech-logo.png" alt="VTECH" className="w-16 h-16 rounded-2xl object-cover shadow-lg shadow-slate-900/25" />
           <div>
             <h1 className="font-headline text-[28px] font-bold text-[#0f172a] tracking-tight">
-              PC Craft
+              VTECH
             </h1>
             <p className="font-body text-xs sm:text-[13px] text-[#64748b]">
               Sistema de Bancada, Vendas & Carnê para Celular e PC

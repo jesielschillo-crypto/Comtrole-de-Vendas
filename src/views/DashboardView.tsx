@@ -54,7 +54,7 @@ export const DashboardView: React.FC = () => {
             </span>
             <span className="text-xs text-[#94a3b8]">•</span>
             <span className="text-xs text-[#64748b] hidden sm:inline">
-              {currentUser?.storeName || 'PC Craft'}
+              {currentUser?.storeName || 'VTECH'}
             </span>
           </div>
           <span className="font-body text-[12px] text-[#64748b] font-medium capitalize">

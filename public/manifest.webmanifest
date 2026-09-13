@@ -1,6 +1,6 @@
 {
-  "name": "PC Craft Hardware",
-  "short_name": "PC Craft",
+  "name": "VTECH",
+  "short_name": "VTECH",
   "description": "Gestão de clientes, estoque, vendas e parcelas.",
   "lang": "pt-BR",
   "start_url": "/",
@@ -12,9 +12,9 @@
   "categories": ["business", "productivity"],
   "icons": [
     {
-      "src": "/icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "/vtech-logo.png",
+      "sizes": "348x348",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ]

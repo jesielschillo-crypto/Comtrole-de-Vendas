@@ -70,7 +70,7 @@ export function generateReceiptText(params: {
       ? `✅ *Entrada:* ${formatMoney(params.downPayment)} (Pago via PIX)\n`
       : '';
 
-  return `Fala ${firstName}! Segue o recibo do seu ${params.productDescription} montado na *PC Craft*:\n\n🛠 *Item:* ${params.productDescription}\n💰 *Total:* ${formatMoney(params.totalAmount)}\n${downLine}${installmentLine}🛡 *Garantia:* ${params.warrantyNote}\n\nQualquer dúvida ou upgrade futuro, é só chamar por aqui! Valeu pela confiança! 🚀`;
+  return `Fala ${firstName}! Segue o recibo do seu ${params.productDescription} montado na *VTECH*:\n\n🛠 *Item:* ${params.productDescription}\n💰 *Total:* ${formatMoney(params.totalAmount)}\n${downLine}${installmentLine}🛡 *Garantia:* ${params.warrantyNote}\n\nQualquer dúvida ou upgrade futuro, é só chamar por aqui! Valeu pela confiança! 🚀`;
 }
 
 export function generateReminderText(params: {
@@ -84,7 +84,7 @@ export function generateReminderText(params: {
 }): string {
   const firstName = params.clientName.split(' ')[0] || params.clientName;
   if (params.isOverdue) {
-    return `Olá ${firstName}, tudo bem? Passando para lembrar que a parcela ${params.installmentNumber}/${params.totalInstallments} de ${formatMoney(params.amount)} referente ao seu ${params.productDescription} na PC Craft venceu em ${params.dueDate}.\n\nSe precisar do código PIX ou boleto para acertar, é só avisar por aqui! 👍`;
+    return `Olá ${firstName}, tudo bem? Passando para lembrar que a parcela ${params.installmentNumber}/${params.totalInstallments} de ${formatMoney(params.amount)} referente ao seu ${params.productDescription} na VTECH venceu em ${params.dueDate}.\n\nSe precisar do código PIX ou boleto para acertar, é só avisar por aqui! 👍`;
   }
-  return `Olá ${firstName}! Tudo bem? Passando para avisar que a parcela ${params.installmentNumber}/${params.totalInstallments} de ${formatMoney(params.amount)} do seu ${params.productDescription} na PC Craft vence em ${params.dueDate}.\n\nQualquer dúvida estamos à disposição!`;
+  return `Olá ${firstName}! Tudo bem? Passando para avisar que a parcela ${params.installmentNumber}/${params.totalInstallments} de ${formatMoney(params.amount)} do seu ${params.productDescription} na VTECH vence em ${params.dueDate}.\n\nQualquer dúvida estamos à disposição!`;
 }

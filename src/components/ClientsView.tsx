@@ -116,16 +116,16 @@ export const ClientsView: React.FC<ClientsViewProps> = ({
     let msg = '';
     switch (customMsgType) {
       case 'lembrete':
-        msg = `Olá ${client.name}, tudo bem? Aqui é da PC Craft Hardware! Passando para lembrar da sua parcela referente à compra (${client.soldItemsSummary || 'equipamentos de hardware'}). Restante em aberto: R$ ${client.totalPending.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}. Qualquer dúvida sobre as formas de pagamento, estamos à disposição!`;
+        msg = `Olá ${client.name}, tudo bem? Aqui é da VTECH! Passando para lembrar da sua parcela referente à compra (${client.soldItemsSummary || 'equipamentos de hardware'}). Restante em aberto: R$ ${client.totalPending.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}. Qualquer dúvida sobre as formas de pagamento, estamos à disposição!`;
         break;
       case 'hoje':
-        msg = `Olá ${client.name}! Sua parcela referente à compra de ${client.soldItemsSummary || 'hardware'} na PC Craft Hardware vence hoje. Valor restante: R$ ${client.totalPending.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}. Qualquer dúvida estamos à disposição!`;
+        msg = `Olá ${client.name}! Sua parcela referente à compra de ${client.soldItemsSummary || 'hardware'} na VTECH vence hoje. Valor restante: R$ ${client.totalPending.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}. Qualquer dúvida estamos à disposição!`;
         break;
       case 'atraso':
-        msg = `Prezado(a) ${client.name}, identificamos um saldo em aberto de R$ ${client.totalPending.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} na PC Craft Hardware. Por favor, entre em contato conosco para alinharmos o pagamento da parcela.`;
+        msg = `Prezado(a) ${client.name}, identificamos um saldo em aberto de R$ ${client.totalPending.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} na VTECH. Por favor, entre em contato conosco para alinharmos o pagamento da parcela.`;
         break;
       case 'recibo':
-        msg = `Olá ${client.name}! Confirmamos o recebimento da sua parcela na PC Craft Hardware referente a ${client.soldItemsSummary || 'sua compra'}. Muito obrigado pela preferência!`;
+        msg = `Olá ${client.name}! Confirmamos o recebimento da sua parcela na VTECH referente a ${client.soldItemsSummary || 'sua compra'}. Muito obrigado pela preferência!`;
         break;
     }
     return {
@@ -558,7 +558,11 @@ export const ClientsView: React.FC<ClientsViewProps> = ({
                       <option value="4">4x</option>
                       <option value="5">5x</option>
                       <option value="6">6x</option>
+                      <option value="7">7x</option>
+                      <option value="8">8x</option>
+                      <option value="9">9x</option>
                       <option value="10">10x</option>
+                      <option value="11">11x</option>
                       <option value="12">12x</option>
                     </select>
                   </div>

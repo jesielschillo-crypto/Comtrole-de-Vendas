@@ -31,14 +31,14 @@ export const AdminRequestsModal: React.FC<AdminRequestsModalProps> = ({
 
   const handleCopyCode = (req: AccessRequest) => {
     const code = StorageManager.getHwidUnlockCode(req.hwid) || req.accessCode || MASTER_UNLOCK_CODE;
-    const msg = `Olá ${req.fullName}! Seu código de liberação exclusivo para o computador ${req.hwid} no PC Craft é: ${code}`;
+    const msg = `Olá ${req.fullName}! Seu código de liberação exclusivo para o computador ${req.hwid} na VTECH é: ${code}`;
     navigator.clipboard.writeText(msg);
     setCopiedId(req.id);
     setTimeout(() => setCopiedId(null), 2500);
   };
 
   const handleCopyCustomHwidCode = () => {
-    const msg = `Olá! Seu código de liberação exclusivo para o computador ${hwidInput.trim()} no PC Craft é: ${calculatedCode}`;
+    const msg = `Olá! Seu código de liberação exclusivo para o computador ${hwidInput.trim()} na VTECH é: ${calculatedCode}`;
     navigator.clipboard.writeText(msg);
     setCopiedCustomHwid(true);
     setTimeout(() => setCopiedCustomHwid(false), 2500);
@@ -52,7 +52,7 @@ export const AdminRequestsModal: React.FC<AdminRequestsModalProps> = ({
       fullName: 'Terminal Balcão (Novo Código)',
       email: 'gestor@pccraft.com.br',
       whatsapp: '47988611619',
-      storeName: 'PC Craft Hardware',
+      storeName: 'VTECH',
       role: 'Vendedor / Operador',
     });
     setRequests(StorageManager.getAccessRequests());
@@ -210,7 +210,7 @@ export const AdminRequestsModal: React.FC<AdminRequestsModalProps> = ({
                     {req.whatsapp && (
                       <a
                         href={`https://wa.me/55${req.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent(
-                          `Olá ${req.fullName}! Seu código de liberação para o terminal no PC Craft Hardware é: ${
+                          `Olá ${req.fullName}! Seu código de liberação para o terminal na VTECH é: ${
                             req.accessCode || MASTER_UNLOCK_CODE
                           }. Digite no aplicativo para acessar.`
                         )}`}

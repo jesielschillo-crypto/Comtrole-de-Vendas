@@ -88,11 +88,9 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlocked, onOpenAdminP
       <div className="w-full max-w-md">
         <header className="flex items-center justify-between gap-3 mb-5">
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-11 h-11 rounded-xl bg-[#034c70] flex items-center justify-center text-[#5dc6ff] shrink-0">
-              <span className="material-symbols-outlined text-[25px]">memory</span>
-            </div>
+            <img src="/vtech-logo.png" alt="VTECH" className="w-11 h-11 rounded-xl object-cover shrink-0" />
             <div className="min-w-0">
-              <h1 className="text-base font-bold text-slate-900 truncate">PC Craft Hardware</h1>
+              <h1 className="text-base font-bold text-slate-900 truncate">VTECH</h1>
               <p className="text-[10px] text-[#00658c] uppercase font-bold tracking-wide break-words">
                 Vendas de PCs e periféricos
               </p>

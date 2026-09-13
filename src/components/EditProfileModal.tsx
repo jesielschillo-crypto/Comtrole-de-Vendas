@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Camera, KeyRound, Mail, Save, X } from 'lucide-react';
+import { Camera, KeyRound, Mail, Phone, Save, X } from 'lucide-react';
 import { StoreProfile } from '../types';
 import { AvatarSelector } from './AvatarSelector';
 import { isSupabaseConfigured, sendPasswordResetEmail } from '../lib/supabase';
@@ -14,6 +14,7 @@ interface EditProfileModalProps {
 export const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, profile, onSaveProfile }) => {
   const [fullName, setFullName] = useState(profile.fullName);
   const [corporateEmail, setCorporateEmail] = useState(profile.corporateEmail);
+  const [whatsappContact, setWhatsappContact] = useState(profile.whatsappContact);
   const [avatarUrl, setAvatarUrl] = useState(profile.avatarUrl);
   const [resetMessage, setResetMessage] = useState('');
   const [isSendingReset, setIsSendingReset] = useState(false);
@@ -22,7 +23,13 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onCl
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    onSaveProfile({ ...profile, fullName: fullName.trim(), corporateEmail: corporateEmail.trim(), avatarUrl });
+    onSaveProfile({
+      ...profile,
+      fullName: fullName.trim(),
+      corporateEmail: corporateEmail.trim(),
+      whatsappContact: whatsappContact.trim(),
+      avatarUrl,
+    });
     onClose();
   };
 
@@ -66,6 +73,20 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onCl
             <span className="relative mt-1.5 block">
               <Mail size={17} className="pointer-events-none absolute left-3 top-3 text-slate-400" />
               <input type="email" value={corporateEmail} onChange={event => setCorporateEmail(event.target.value)} required className="block h-11 w-full rounded-xl border border-slate-300 pl-10 pr-3 font-normal outline-none focus:border-[#00658c]" />
+            </span>
+          </label>
+
+          <label className="block text-sm font-bold text-slate-700">
+            WhatsApp Comercial
+            <span className="relative mt-1.5 block">
+              <Phone size={17} className="pointer-events-none absolute left-3 top-3 text-slate-400" />
+              <input
+                type="tel"
+                value={whatsappContact}
+                onChange={event => setWhatsappContact(event.target.value)}
+                placeholder="(47) 98861-1619"
+                className="block h-11 w-full rounded-xl border border-slate-300 pl-10 pr-3 font-normal outline-none focus:border-[#00658c]"
+              />
             </span>
           </label>
 

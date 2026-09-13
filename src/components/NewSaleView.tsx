@@ -644,7 +644,11 @@ export const NewSaleView: React.FC<NewSaleViewProps> = ({
                     <option value={4}>4x (Entrada + 3 parcelas de R$ {Math.round(remainingAmount / 3).toLocaleString('pt-BR')})</option>
                     <option value={5}>5x (Entrada + 4 parcelas de R$ {Math.round(remainingAmount / 4).toLocaleString('pt-BR')})</option>
                     <option value={6}>6x (Entrada + 5 parcelas de R$ {Math.round(remainingAmount / 5).toLocaleString('pt-BR')})</option>
+                    <option value={7}>7x (Entrada + 6 parcelas de R$ {Math.round(remainingAmount / 6).toLocaleString('pt-BR')})</option>
+                    <option value={8}>8x (Entrada + 7 parcelas de R$ {Math.round(remainingAmount / 7).toLocaleString('pt-BR')})</option>
+                    <option value={9}>9x (Entrada + 8 parcelas de R$ {Math.round(remainingAmount / 8).toLocaleString('pt-BR')})</option>
                     <option value={10}>10x (Entrada + 9 parcelas)</option>
+                    <option value={11}>11x (Entrada + 10 parcelas)</option>
                     <option value={12}>12x (Entrada + 11 parcelas)</option>
                   </select>
                 </div>
@@ -766,7 +770,7 @@ export const NewSaleView: React.FC<NewSaleViewProps> = ({
             {/* Recibo Formatado para WhatsApp e Comprovante */}
             <div className="p-3.5 bg-slate-50 rounded-xl text-xs space-y-1.5 font-mono text-slate-800 border border-slate-200">
               <p className="font-bold text-[#00344f] border-b border-slate-200 pb-1">
-                PC CRAFT HARDWARE • COMPROVANTE
+                VTECH • COMPROVANTE
               </p>
               <p><strong>Cliente:</strong> {completedSale.clientName}</p>
               <p><strong>WhatsApp:</strong> {completedSale.clientPhone}</p>
@@ -778,6 +782,7 @@ export const NewSaleView: React.FC<NewSaleViewProps> = ({
               {completedSale.paymentMethod === 'parcelado_loja' && remainingAmount > 0 ? (
                 <div className="text-amber-800 font-bold">
                   <p><strong>Parcelamento:</strong> {remainingInstallments}x de R$ {installmentValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                  <p className="text-[11px] font-bold mt-1">Datas de vencimento:</p>
                   {completedSale.paymentSchedule?.map(item => (
                     <p key={item.installmentNumber} className="text-[11px] font-medium">
                       {item.installmentNumber}ª parcela: {new Date(`${item.dueDate}T12:00:00`).toLocaleDateString('pt-BR')}
@@ -794,14 +799,18 @@ export const NewSaleView: React.FC<NewSaleViewProps> = ({
             <div className="space-y-2">
               <a
                 href={`https://wa.me/55${completedSale.clientPhone}?text=${encodeURIComponent(
-                  `*PC CRAFT HARDWARE - RECIBO DE COMPRA*\n\n` +
+                  `*VTECH - RECIBO DE COMPRA*\n\n` +
                   `Olá ${completedSale.clientName}!\n` +
                   `Aqui está o comprovante da sua compra conosco:\n\n` +
                   `🖥️ *O que comprou:* ${completedSale.items[0]?.name}\n` +
                   `💵 *Valor Total:* R$ ${completedSale.totalAmount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n` +
                   `💰 *Entrada Paga:* R$ ${completedSale.downPayment.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n` +
                   (completedSale.paymentMethod === 'parcelado_loja' && remainingAmount > 0
-                    ? `📅 *Parcelamento:* ${remainingInstallments}x de R$ ${installmentValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`
+                    ? `📅 *Parcelamento:* ${remainingInstallments}x de R$ ${installmentValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n` +
+                      `*Datas de vencimento:*\n` +
+                      (completedSale.paymentSchedule || []).map(item =>
+                        `${item.installmentNumber}ª parcela: ${new Date(`${item.dueDate}T12:00:00`).toLocaleDateString('pt-BR')}`
+                      ).join('\n') + '\n'
                     : `✅ *Pagamento:* À Vista / Quitado\n`) +
                   `\nMuito obrigado pela confiança!\nQualquer dúvida estamos à disposição.`
                 )}`}

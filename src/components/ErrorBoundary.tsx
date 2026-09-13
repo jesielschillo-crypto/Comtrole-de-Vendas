@@ -47,7 +47,7 @@ export class ErrorBoundary extends Component<Props, State> {
             <div className="w-12 h-12 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mx-auto">
               <span className="material-symbols-outlined text-[28px]">refresh</span>
             </div>
-            <h2 className="text-lg font-bold text-slate-900">PC Craft Hardware</h2>
+            <h2 className="text-lg font-bold text-slate-900">VTECH</h2>
             <p className="text-xs text-slate-600">
               O sistema precisava atualizar a visualização. Clique no botão abaixo para restaurar:
             </p>

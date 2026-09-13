@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { hydrateStorageFromCloud, StorageManager, syncStorageToCloud } from './lib/storage';
+import { hydrateStorageFromCloud, StorageManager } from './lib/storage';
 import { isSupabaseConfigured } from './lib/supabase';
 import { Product, Client, Sale, StoreProfile } from './types';
 import { Header } from './components/Header';
@@ -35,7 +35,7 @@ const cleanDemoDataOnFirstRun = () => {
   return true;
 };
 
-const shouldResetCloudForDelivery = cleanDemoDataOnFirstRun();
+cleanDemoDataOnFirstRun();
 
 export default function App() {
   // Verificação de URL para liberação com 1 clique do Jesiel
@@ -74,11 +74,7 @@ export default function App() {
 
     let mounted = true;
     void (async () => {
-      if (shouldResetCloudForDelivery) {
-        await syncStorageToCloud();
-      } else {
-        await hydrateStorageFromCloud();
-      }
+      await hydrateStorageFromCloud();
     })().finally(() => {
       if (!mounted) return;
       setTerminalState(StorageManager.getTerminalState());

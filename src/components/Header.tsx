@@ -22,19 +22,19 @@ export const Header: React.FC<HeaderProps> = ({
   const getTabTitle = () => {
     switch (currentTab) {
       case 'inicio':
-        return { title: 'PC Craft Hardware', subtitle: 'PAINEL DE VENDAS' };
+        return { title: 'VTECH', subtitle: 'PAINEL DE VENDAS' };
       case 'nova-venda':
-        return { title: 'PC Craft', subtitle: 'REGISTRAR VENDA & PARCELAMENTO' };
+        return { title: 'VTECH', subtitle: 'REGISTRAR VENDA & PARCELAMENTO' };
       case 'clientes':
-        return { title: 'PC Craft', subtitle: 'CLIENTES & PARCELAS' };
+        return { title: 'VTECH', subtitle: 'CLIENTES & PARCELAS' };
       case 'estoque':
-        return { title: 'PC Craft', subtitle: 'ESTOQUE & EQUIPAMENTOS' };
+        return { title: 'VTECH', subtitle: 'ESTOQUE & EQUIPAMENTOS' };
       case 'cadastrar-produto':
-        return { title: 'PC Craft', subtitle: 'CADASTRAR PEÇA' };
+        return { title: 'VTECH', subtitle: 'CADASTRAR PEÇA' };
       case 'perfil':
-        return { title: 'PC Craft Hardware', subtitle: 'PERFIL' };
+        return { title: 'VTECH', subtitle: 'PERFIL' };
       default:
-        return { title: 'PC Craft Hardware', subtitle: 'CONTROLE DE VENDAS' };
+        return { title: 'VTECH', subtitle: 'CONTROLE DE VENDAS' };
     }
   };
 
@@ -43,9 +43,7 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4 py-2.5 bg-white border-b border-slate-200 shadow-xs">
       <div className="flex items-center gap-2.5">
-        <div className="w-10 h-10 rounded-xl bg-[#034c70] flex items-center justify-center text-[#5dc6ff] shadow-sm shrink-0">
-          <span className="text-lg font-black">PC</span>
-        </div>
+        <img src="/vtech-logo.png" alt="VTECH" className="w-10 h-10 rounded-xl object-cover shadow-sm shrink-0" />
         <div className="leading-tight min-w-0">
           <h1 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight flex items-center gap-1.5 truncate">
             {title}

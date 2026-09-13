@@ -33,11 +33,11 @@ export const QuickApprovalScreen: React.FC<QuickApprovalScreenProps> = ({
   };
 
   const whatsappClientReply = `https://wa.me/?text=${encodeURIComponent(
-    `Olá ${buyerName}! Seu acesso ao PC Craft foi APROVADO com sucesso! 🎉\n\n💻 Computador: ${hwid}\n🔑 Seu Código de 6 Dígitos: ${unlockCode}\n\n👉 Ou clique direto no link abaixo no seu computador para abrir já liberado:\n${clientUnlockUrl}`
+    `Olá ${buyerName}! Seu acesso à VTECH foi APROVADO com sucesso! 🎉\n\n💻 Computador: ${hwid}\n🔑 Seu Código de 6 Dígitos: ${unlockCode}\n\n👉 Ou clique direto no link abaixo no seu computador para abrir já liberado:\n${clientUnlockUrl}`
   )}`;
 
   const emailClientReply = `mailto:?subject=${encodeURIComponent(
-    `Acesso Liberado - PC Craft Hardware (${hwid})`
+    `Acesso Liberado - VTECH (${hwid})`
   )}&body=${encodeURIComponent(
     `Olá ${buyerName}!\n\nSeu acesso ao sistema foi APROVADO com sucesso! 🎉\n\n💻 Computador: ${hwid}\n🔑 Código de Liberação: ${unlockCode}\n\n👉 Ou clique no link abaixo para abrir já liberado:\n${clientUnlockUrl}`
   )}`;
@@ -52,7 +52,7 @@ export const QuickApprovalScreen: React.FC<QuickApprovalScreenProps> = ({
               <span className="material-symbols-outlined text-[24px]">verified_user</span>
             </div>
             <div>
-              <h1 className="text-base font-bold">Portal de Liberação - PC Craft Hardware</h1>
+              <h1 className="text-base font-bold">Portal de Liberação - VTECH</h1>
               <p className="text-[11px] text-blue-200 font-medium">Aprovação de Acesso com 1 Clique</p>
             </div>
           </div>
@@ -71,7 +71,7 @@ export const QuickApprovalScreen: React.FC<QuickApprovalScreenProps> = ({
                 </div>
                 <h2 className="text-lg font-bold text-slate-900">Solicitação de Acesso Recebida</h2>
                 <p className="text-xs text-slate-500">
-                  Um cliente solicitou liberação para utilizar o PC Craft neste computador:
+                  Um cliente solicitou liberação para utilizar a VTECH neste computador:
                 </p>
               </div>
 

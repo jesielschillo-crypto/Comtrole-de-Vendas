@@ -67,29 +67,14 @@ export async function hydrateStorageFromCloud(): Promise<boolean> {
     USERS: [],
   };
 
-  if (rows.length === 0) {
-    CLOUD_STATE_KEYS.forEach(key => localStorage.removeItem(STORAGE_KEYS[key]));
-    localStorage.removeItem('app_state');
-    localStorage.removeItem('pccraft_clients');
-    localStorage.removeItem('pccraft_inventory');
-    localStorage.removeItem('pccraft_sales');
-    localStorage.removeItem('pccraft_users');
-    localStorage.removeItem('pccraft_auth_user');
-    localStorage.removeItem('pccraft_authenticated');
-  }
-
   CLOUD_STATE_KEYS.forEach(key => {
-    const localUsers = key === 'USERS' ? StorageManager.getUsers() : [];
-    const cloudUsers = cloudValues.get(key);
-    const value = key === 'USERS' && Array.isArray(cloudUsers) && cloudUsers.length === 0 && localUsers.length > 0
-      ? localUsers
-      : cloudValues.has(key) ? cloudUsers : emptyValues[key];
-
     localStorage.setItem(
       STORAGE_KEYS[key],
-      JSON.stringify(value),
+      JSON.stringify(cloudValues.has(key) ? cloudValues.get(key) : emptyValues[key]),
     );
   });
+
+  if (rows.length === 0) await syncStorageToCloud();
 
   return rows.length > 0;
 }
@@ -404,7 +389,7 @@ export const INITIAL_SALES: Sale[] = [
 export const INITIAL_PROFILE: StoreProfile = {
   fullName: 'Administrador',
   role: 'Administrador da loja',
-  storeBranch: 'PC Craft Hardware',
+  storeBranch: 'VTECH',
   corporateEmail: '',
   whatsappContact: '',
   pixKey: '',
@@ -840,7 +825,7 @@ export const StorageManager = {
         fullName: buyerName || 'Comprador (WhatsApp/Email)',
         email: 'cliente@pccraft.com.br',
         whatsapp: ADMIN_WHATSAPP,
-        storeName: 'PC Craft Hardware',
+        storeName: 'VTECH',
         role: 'Operador / Vendas',
         requestedAt: new Date().toISOString(),
         status: 'aprovado',

@@ -102,7 +102,7 @@ export const ReceiptView: React.FC = () => {
       `Data do Pagamento: *${paidDate}*\n` +
       `Forma: *${method}*\n\n` +
       `Saldo Restante: *${formatMoney(Math.max(0, selectedSale.remainingBalance - (inst.status === 'paid' ? 0 : inst.amount)))}*\n\n` +
-      `_Agradecemos a confiança! - PC Craft_`;
+      `_Agradecemos a confiança! - VTECH_`;
 
     const url = generateWhatsAppUrl(selectedSale.clientPhone, text);
     window.open(url, '_blank');
@@ -232,7 +232,7 @@ export const ReceiptView: React.FC = () => {
               </div>
               <div className="flex flex-col">
                 <span className="font-headline text-[17px] text-[#0f172a] font-bold leading-tight">
-                  {storeName || 'PC Craft'}
+                  {storeName || 'VTECH'}
                 </span>
                 <span className="font-body text-[12px] text-[#64748b]">
                   Responsável: {adminName}

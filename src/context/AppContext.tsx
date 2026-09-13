@@ -22,7 +22,7 @@ const DEFAULT_ADMIN: AdminUser = {
   email: 'admin@pccraft.com.br',
   password: 'admin',
   role: 'admin',
-  storeName: 'PC Craft - Montagem & Periféricos',
+  storeName: 'VTECH',
   phone: '(11) 99876-5432',
   pixKey: 'admin@pccraft.com.br',
   avatarUrl: '',
@@ -210,7 +210,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const adminName = cleanUserName(currentUser?.name || 'Thiago Almeida');
-  const storeName = currentUser?.storeName || 'PC Craft';
+  const storeName = currentUser?.storeName || 'VTECH';
 
   // Mark clean slate as initialized
   useEffect(() => {
@@ -343,7 +343,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       username: cleanUsername,
       password: userData.password?.trim() || '',
       avatarUrl: userData.avatarUrl || '',
-      storeName: userData.storeName?.trim() || 'PC Craft',
+      storeName: userData.storeName?.trim() || 'VTECH',
       email: cleanEmail,
       phone: userData.phone?.trim() || '',
       pixKey: userData.pixKey?.trim() || '',

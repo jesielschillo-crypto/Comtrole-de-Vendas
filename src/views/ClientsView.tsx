@@ -163,13 +163,13 @@ export const ClientsView: React.FC = () => {
   const openWhatsAppMessageDialog = (client: Client, defaultType: 'debt' | 'ready' | 'warranty' | 'general', latestProduct: string, pendingAmount: number) => {
     let msg = '';
     if (defaultType === 'debt') {
-      msg = `Olá ${client.name}, tudo bem? Passando para atualizar sua parcela da compra de ${latestProduct} na PC Craft no valor de ${formatMoney(pendingAmount)}. Posso te mandar a chave PIX?`;
+      msg = `Olá ${client.name}, tudo bem? Passando para atualizar sua parcela da compra de ${latestProduct} na VTECH no valor de ${formatMoney(pendingAmount)}. Posso te mandar a chave PIX?`;
     } else if (defaultType === 'ready') {
-      msg = `Olá ${client.name}! Boas notícias: seu ${latestProduct} está pronto e revisado na bancada da PC Craft para retirada ou envio!`;
+      msg = `Olá ${client.name}! Boas notícias: seu ${latestProduct} está pronto e revisado na bancada da VTECH para retirada ou envio!`;
     } else if (defaultType === 'warranty') {
       msg = `Olá ${client.name}! Tudo bem? Como está o desempenho do seu ${latestProduct}? Qualquer dúvida de suporte ou periféricos adicionais, estamos à disposição!`;
     } else {
-      msg = `Olá ${client.name}! Tudo bem? Falo da PC Craft Hardware & Computadores.`;
+      msg = `Olá ${client.name}! Tudo bem? Falo da VTECH.`;
     }
 
     setCustomMsgText(msg);
@@ -371,8 +371,8 @@ export const ClientsView: React.FC = () => {
             }
 
             const defaultMsg = isOverdue
-              ? `Olá ${client.name}, tudo bem? Passando para atualizar sua parcela da compra de ${latestProduct} na PC Craft no valor de ${formatMoney(totalPending)}. Chave PIX: ...`
-              : `Olá ${client.name}! Tudo bem? Passando para mandar uma mensagem da PC Craft referente ao seu ${latestProduct}!`;
+              ? `Olá ${client.name}, tudo bem? Passando para atualizar sua parcela da compra de ${latestProduct} na VTECH no valor de ${formatMoney(totalPending)}. Chave PIX: ...`
+              : `Olá ${client.name}! Tudo bem? Passando para mandar uma mensagem da VTECH referente ao seu ${latestProduct}!`;
 
             const waDirectUrl = generateWhatsAppUrl(client.phone, defaultMsg);
 
@@ -705,7 +705,7 @@ export const ClientsView: React.FC = () => {
                   type="button"
                   onClick={() =>
                     setCustomMsgText(
-                      `Olá ${clientForMessageModal.name}! Passando para avisar que seu PC Gamer / Periférico está pronto na bancada da PC Craft para retirada ou entrega!`
+                      `Olá ${clientForMessageModal.name}! Passando para avisar que seu PC Gamer / Periférico está pronto na bancada da VTECH para retirada ou entrega!`
                     )
                   }
                   className="p-2 rounded-lg bg-[#f8fafc] hover:bg-[#eff6ff] text-left border border-[#cbd5e1] font-medium"
@@ -716,7 +716,7 @@ export const ClientsView: React.FC = () => {
                   type="button"
                   onClick={() =>
                     setCustomMsgText(
-                      `Olá ${clientForMessageModal.name}, tudo bem? Passando para atualizar o lembrete da parcela da sua compra na PC Craft. Chave PIX: ...`
+                      `Olá ${clientForMessageModal.name}, tudo bem? Passando para atualizar o lembrete da parcela da sua compra na VTECH. Chave PIX: ...`
                     )
                   }
                   className="p-2 rounded-lg bg-[#f8fafc] hover:bg-[#eff6ff] text-left border border-[#cbd5e1] font-medium"
@@ -738,7 +738,7 @@ export const ClientsView: React.FC = () => {
                   type="button"
                   onClick={() =>
                     setCustomMsgText(
-                      `Olá ${clientForMessageModal.name}! Chegaram novidades em monitores 165Hz, mouses ultraleves e teclados mecânicos na PC Craft com preços especiais para clientes!`
+                      `Olá ${clientForMessageModal.name}! Chegaram novidades em monitores 165Hz, mouses ultraleves e teclados mecânicos na VTECH com preços especiais para clientes!`
                     )
                   }
                   className="p-2 rounded-lg bg-[#f8fafc] hover:bg-[#eff6ff] text-left border border-[#cbd5e1] font-medium"

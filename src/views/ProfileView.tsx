@@ -16,7 +16,7 @@ export const ProfileView: React.FC = () => {
   } = useApp();
 
   const [name, setName] = useState(cleanUserName(currentUser?.name || 'Thiago Almeida'));
-  const [storeName, setStoreName] = useState(currentUser?.storeName || 'PC Craft');
+  const [storeName, setStoreName] = useState(currentUser?.storeName || 'VTECH');
   const [email, setEmail] = useState(currentUser?.email || 'admin@pccraft.com.br');
   const [username, setUsername] = useState(currentUser?.username || 'admin');
   const [phone, setPhone] = useState(currentUser?.phone || '');
@@ -166,7 +166,7 @@ export const ProfileView: React.FC = () => {
             </span>
           </div>
           <p className="text-sm font-medium text-[#475569]">
-            {storeName || 'PC Craft'} • @{username}
+            {storeName || 'VTECH'} • @{username}
           </p>
           <p className="text-xs text-[#64748b]">
             Compatível com Celular e Computador
@@ -245,7 +245,7 @@ export const ProfileView: React.FC = () => {
                 type="text"
                 value={storeName}
                 onChange={e => setStoreName(e.target.value)}
-                placeholder="Ex: PC Craft - Montagem & Periféricos"
+                placeholder="Ex: VTECH - Montagem & Periféricos"
                 className="w-full h-11 px-3 bg-[#f8fafc] text-[#0f172a] rounded-xl text-sm border border-[#cbd5e1] focus:outline-none focus:bg-white focus:border-[#006194]"
               />
             </div>
