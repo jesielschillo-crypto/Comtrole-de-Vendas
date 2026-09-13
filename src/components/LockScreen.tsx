@@ -8,7 +8,7 @@ interface LockScreenProps {
 }
 
 export const LockScreen: React.FC<LockScreenProps> = ({ onUnlocked, onOpenAdminPanel }) => {
-  const [mode, setMode] = useState<'login' | 'register'>('login');
+  const [mode, setMode] = useState<'login' | 'register'>('register');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -146,13 +146,28 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlocked, onOpenAdminP
               {!isSupabaseConfigured() && <p className="text-center text-[10px] text-slate-400">Configure o Supabase para ativar o Google.</p>}
             </form>
           ) : (
-            <form onSubmit={handleRegister} className="space-y-3.5">
-              <label className="block text-sm font-bold text-slate-700">Nome completo<input value={name} onChange={event => setName(event.target.value)} required className="mt-1.5 w-full h-11 px-3 rounded-xl border border-slate-300 text-sm font-normal outline-none focus:border-[#00658c]" autoComplete="name" /></label>
-              <label className="block text-sm font-bold text-slate-700">E-mail<input type="email" value={email} onChange={event => setEmail(event.target.value)} required className="mt-1.5 w-full h-11 px-3 rounded-xl border border-slate-300 text-sm font-normal outline-none focus:border-[#00658c]" autoComplete="email" /></label>
-              <label className="block text-sm font-bold text-slate-700">Usuário<input value={username} onChange={event => setUsername(event.target.value)} required className="mt-1.5 w-full h-11 px-3 rounded-xl border border-slate-300 text-sm font-normal outline-none focus:border-[#00658c]" autoComplete="username" /></label>
+            <form onSubmit={handleRegister} className="space-y-4">
+              <label className="block text-sm font-bold text-slate-700">
+                Nome completo
+                <input value={name} onChange={event => setName(event.target.value)} required className="mt-1.5 block w-full h-11 px-3 rounded-xl border border-slate-300 text-sm font-normal outline-none focus:border-[#00658c]" autoComplete="name" />
+              </label>
+              <label className="block text-sm font-bold text-slate-700">
+                Usuário
+                <input value={username} onChange={event => setUsername(event.target.value)} required placeholder="Ex.: joao.silva" className="mt-1.5 block w-full h-11 px-3 rounded-xl border border-slate-300 text-sm font-normal outline-none focus:border-[#00658c]" autoComplete="username" />
+              </label>
+              <label className="block text-sm font-bold text-slate-700">
+                E-mail
+                <input type="email" value={email} onChange={event => setEmail(event.target.value)} required placeholder="voce@email.com" className="mt-1.5 block w-full h-11 px-3 rounded-xl border border-slate-300 text-sm font-normal outline-none focus:border-[#00658c]" autoComplete="email" />
+              </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <label className="block text-sm font-bold text-slate-700">Senha<input type="password" value={password} onChange={event => setPassword(event.target.value)} required className="mt-1.5 w-full h-11 px-3 rounded-xl border border-slate-300 text-sm font-normal outline-none focus:border-[#00658c]" autoComplete="new-password" /></label>
-                <label className="block text-sm font-bold text-slate-700">Confirmar senha<input type="password" value={confirmPassword} onChange={event => setConfirmPassword(event.target.value)} required className="mt-1.5 w-full h-11 px-3 rounded-xl border border-slate-300 text-sm font-normal outline-none focus:border-[#00658c]" autoComplete="new-password" /></label>
+                <label className="block text-sm font-bold text-slate-700">
+                  Senha
+                  <input type="password" value={password} onChange={event => setPassword(event.target.value)} required placeholder="Mínimo 6 caracteres" className="mt-1.5 block w-full h-11 px-3 rounded-xl border border-slate-300 text-sm font-normal outline-none focus:border-[#00658c]" autoComplete="new-password" />
+                </label>
+                <label className="block text-sm font-bold text-slate-700">
+                  Confirmar senha
+                  <input type="password" value={confirmPassword} onChange={event => setConfirmPassword(event.target.value)} required className="mt-1.5 block w-full h-11 px-3 rounded-xl border border-slate-300 text-sm font-normal outline-none focus:border-[#00658c]" autoComplete="new-password" />
+                </label>
               </div>
               <button type="submit" className="w-full h-12 bg-[#034c70] hover:bg-[#00344f] text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 mt-1">
                 <span className="material-symbols-outlined text-[20px]">person_add</span>
