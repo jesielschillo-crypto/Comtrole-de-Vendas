@@ -43,6 +43,12 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlocked, onOpenAdminP
       role: 'Administrador',
     });
 
+    const currentProfile = StorageManager.getProfile();
+    StorageManager.saveProfile({
+      ...currentProfile,
+      fullName: user.fullName,
+      corporateEmail: user.email,
+    });
     StorageManager.unlockTerminal(undefined, user);
     onUnlocked();
   };
@@ -62,6 +68,12 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlocked, onOpenAdminP
       return;
     }
 
+    const currentProfile = StorageManager.getProfile();
+    StorageManager.saveProfile({
+      ...currentProfile,
+      fullName: user.fullName,
+      corporateEmail: user.email,
+    });
     StorageManager.unlockTerminal(undefined, user);
     onUnlocked();
   };

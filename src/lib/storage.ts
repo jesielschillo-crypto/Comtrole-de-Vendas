@@ -393,18 +393,18 @@ export const INITIAL_SALES: Sale[] = [
 ];
 
 export const INITIAL_PROFILE: StoreProfile = {
-  fullName: 'Jesiel Schillo',
-  role: 'Administrador Geral & Técnico Master',
-  storeBranch: 'PC Craft Hardware - Matriz',
-  corporateEmail: 'jesielschillo@gmail.com',
-  whatsappContact: '(47) 98861-1619',
-  pixKey: '47988611619',
-  technicianId: '#PC-8842',
+  fullName: 'Administrador',
+  role: 'Administrador da loja',
+  storeBranch: 'PC Craft Hardware',
+  corporateEmail: '',
+  whatsappContact: '',
+  pixKey: '',
+  technicianId: '#PC-0000',
   avatarUrl: '',
-  licenseId: 'PC-CRAFT-X9192-BR',
-  licensePlan: 'Plano Pro / Lojista Hardware',
-  licenseExpiry: '18/02/2026',
-  deviceLimit: 3,
+  licenseId: 'PC-CRAFT-CLIENTE',
+  licensePlan: 'Plano Pro',
+  licenseExpiry: '',
+  deviceLimit: 1,
   connectedDevices: 1
 };
 

@@ -52,7 +52,7 @@ export const QuickApprovalScreen: React.FC<QuickApprovalScreenProps> = ({
               <span className="material-symbols-outlined text-[24px]">verified_user</span>
             </div>
             <div>
-              <h1 className="text-base font-bold">Portal de Liberação - Jesiel</h1>
+              <h1 className="text-base font-bold">Portal de Liberação - PC Craft Hardware</h1>
               <p className="text-[11px] text-blue-200 font-medium">Aprovação de Acesso com 1 Clique</p>
             </div>
           </div>
