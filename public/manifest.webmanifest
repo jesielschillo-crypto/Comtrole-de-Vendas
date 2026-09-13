@@ -1,0 +1,21 @@
+{
+  "name": "PC Craft Hardware",
+  "short_name": "PC Craft",
+  "description": "Gestão de clientes, estoque, vendas e parcelas.",
+  "lang": "pt-BR",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f8f9ff",
+  "theme_color": "#034c70",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

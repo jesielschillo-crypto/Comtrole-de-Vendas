@@ -26,7 +26,7 @@ export const Navigation: React.FC<NavigationProps> = ({
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 w-full z-40 flex justify-around items-center h-16 px-3 bg-white border-t border-slate-200 pb-safe shadow-[0_-4px_12px_rgba(3,76,112,0.08)]">
+    <nav translate="no" className="fixed bottom-0 left-0 w-full z-40 flex justify-around items-center h-16 px-3 bg-white border-t border-slate-200 pb-safe shadow-[0_-4px_12px_rgba(3,76,112,0.08)]">
       {tabs.map((tab) => {
         const isActive = currentTab === tab.id;
         const Icon = tab.icon;
@@ -49,7 +49,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                 </span>
               )}
             </div>
-            <span className="text-[11px] leading-tight tracking-tight whitespace-nowrap">
+            <span translate="no" className="text-[11px] leading-tight tracking-tight whitespace-nowrap">
               {tab.label}
             </span>
           </button>

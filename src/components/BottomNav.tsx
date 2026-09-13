@@ -1,5 +1,6 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
+import { CircleUserRound, LayoutDashboard, Monitor, PointOfSale, Users } from 'lucide-react';
 
 export const BottomNav: React.FC = () => {
   const { currentView, setCurrentView } = useApp();
@@ -17,42 +18,42 @@ export const BottomNav: React.FC = () => {
     {
       id: 'dashboard',
       label: 'Início',
-      icon: 'dashboard',
+      icon: LayoutDashboard,
       action: () => setCurrentView('dashboard'),
       active: isTabActive('dashboard'),
     },
     {
       id: 'inventory',
       label: 'Estoque',
-      icon: 'desktop_windows',
+      icon: Monitor,
       action: () => setCurrentView('inventory'),
       active: isTabActive('inventory'),
     },
     {
       id: 'sales',
       label: 'Venda',
-      icon: 'point_of_sale',
+      icon: PointOfSale,
       action: () => setCurrentView('new_sale'),
       active: isTabActive('sales'),
     },
     {
       id: 'clients',
       label: 'Clientes',
-      icon: 'group',
+      icon: Users,
       action: () => setCurrentView('clients'),
       active: isTabActive('clients'),
     },
     {
       id: 'profile',
       label: 'Perfil ADM',
-      icon: 'account_circle',
+      icon: CircleUserRound,
       action: () => setCurrentView('profile'),
       active: isTabActive('profile'),
     },
   ];
 
   return (
-    <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 pb-safe bg-white/95 backdrop-blur-md border-t border-[#e2e8f0] shadow-lg no-print">
+    <nav translate="no" className="md:hidden fixed bottom-0 inset-x-0 z-40 pb-safe bg-white/95 backdrop-blur-md border-t border-[#e2e8f0] shadow-lg no-print">
       <div className="flex justify-around items-center h-16 max-w-4xl mx-auto px-1">
         {navItems.map(item => (
           <button
@@ -65,15 +66,8 @@ export const BottomNav: React.FC = () => {
                 : 'text-[#64748b] hover:text-[#0f172a]'
             }`}
           >
-            <span
-              className="material-symbols-outlined text-[23px]"
-              style={{
-                fontVariationSettings: item.active ? "'FILL' 1" : "'FILL' 0",
-              }}
-            >
-              {item.icon}
-            </span>
-            <span className="font-body text-[10px] leading-none truncate max-w-[65px]">
+            <item.icon size={23} strokeWidth={item.active ? 2.6 : 2} aria-hidden="true" />
+            <span translate="no" className="font-body text-[10px] leading-none truncate max-w-[65px]">
               {item.label}
             </span>
           </button>
