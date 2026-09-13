@@ -67,6 +67,17 @@ export async function hydrateStorageFromCloud(): Promise<boolean> {
     USERS: [],
   };
 
+  if (rows.length === 0) {
+    CLOUD_STATE_KEYS.forEach(key => localStorage.removeItem(STORAGE_KEYS[key]));
+    localStorage.removeItem('app_state');
+    localStorage.removeItem('pccraft_clients');
+    localStorage.removeItem('pccraft_inventory');
+    localStorage.removeItem('pccraft_sales');
+    localStorage.removeItem('pccraft_users');
+    localStorage.removeItem('pccraft_auth_user');
+    localStorage.removeItem('pccraft_authenticated');
+  }
+
   CLOUD_STATE_KEYS.forEach(key => {
     const localUsers = key === 'USERS' ? StorageManager.getUsers() : [];
     const cloudUsers = cloudValues.get(key);
@@ -79,8 +90,6 @@ export async function hydrateStorageFromCloud(): Promise<boolean> {
       JSON.stringify(value),
     );
   });
-
-  if (rows.length === 0) await syncStorageToCloud();
 
   return rows.length > 0;
 }
