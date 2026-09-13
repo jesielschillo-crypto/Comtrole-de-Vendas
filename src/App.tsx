@@ -16,7 +16,7 @@ import { ProductsView } from './components/ProductsView';
 import { ProductRegistrationView } from './components/ProductRegistrationView';
 
 const cleanDemoDataOnFirstRun = () => {
-  if (typeof window === 'undefined' || localStorage.getItem('pc_craft_empty_delivery_v1')) return;
+  if (typeof window === 'undefined' || localStorage.getItem('pc_craft_empty_delivery_v2')) return;
 
   localStorage.removeItem('pc_craft_products');
   localStorage.removeItem('pc_craft_clients');
@@ -25,7 +25,7 @@ const cleanDemoDataOnFirstRun = () => {
   localStorage.removeItem('pc_craft_access_requests');
   localStorage.removeItem('pc_craft_users');
   localStorage.removeItem('pc_craft_terminal_state');
-  localStorage.setItem('pc_craft_empty_delivery_v1', 'true');
+  localStorage.setItem('pc_craft_empty_delivery_v2', 'true');
 };
 
 cleanDemoDataOnFirstRun();
@@ -46,7 +46,7 @@ export default function App() {
   // Terminal authorization status
   const [terminalState, setTerminalState] = useState(() => StorageManager.getTerminalState());
   const [cloudReady, setCloudReady] = useState(!isSupabaseConfigured());
-  const [currentTab, setCurrentTab] = useState<string>('inicio');
+  const [currentTab, setCurrentTab] = useState<string>('estoque');
 
   // App domain state
   const [products, setProducts] = useState<Product[]>(() => StorageManager.getProducts());

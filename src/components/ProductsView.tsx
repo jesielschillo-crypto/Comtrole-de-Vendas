@@ -16,7 +16,6 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
   onSelectForSale,
   onOpenRegistration,
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState<string>('todos');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [editingStockId, setEditingStockId] = useState<string | null>(null);
   const [editingStockValue, setEditingStockValue] = useState<string>('');
@@ -43,21 +42,6 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
     reader.readAsDataURL(file);
     event.target.value = '';
   };
-
-  const categories = [
-    { id: 'todos', label: 'Todos' },
-    { id: 'pc_montado', label: 'PCs Montados' },
-    { id: 'monitor', label: 'Monitores' },
-    { id: 'mousepad', label: 'Mousepads' },
-    { id: 'teclado', label: 'Teclados' },
-    { id: 'mouse', label: 'Mouses' },
-    { id: 'fone', label: 'Headsets' },
-  ];
-
-  const filteredProducts =
-    selectedCategory === 'todos'
-      ? products
-      : products.filter((p) => p.category === selectedCategory);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,61 +81,17 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
 
   return (
     <div className="space-y-4 pb-28 pt-16 px-4 max-w-lg mx-auto w-full">
-      {/* Category Tabs Scroll */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-2 no-scrollbar">
-        {categories.map((cat) => {
-          const count =
-            cat.id === 'todos'
-              ? products.length
-              : products.filter((p) => p.category === cat.id).length;
-          const isActive = selectedCategory === cat.id;
-
-          return (
-            <button
-              key={cat.id}
-              onClick={() => setSelectedCategory(cat.id)}
-              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all duration-150 ${
-                isActive
-                  ? 'bg-[#00658c] text-white shadow-xs'
-                  : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
-              }`}
-            >
-              {cat.id === 'todos' && <span className="material-symbols-outlined text-[16px]">grid_view</span>}
-              {cat.id === 'pc_montado' && <span className="material-symbols-outlined text-[16px]">desktop_windows</span>}
-              <span>{cat.label}</span>
-              <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${isActive ? 'bg-white/20' : 'bg-slate-100 text-slate-600'}`}>
-                {count}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Status Bar */}
-      <div className="flex items-center justify-between py-1">
-        <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-          <span className="text-xs font-semibold text-slate-800">
-            {filteredProducts.length} PCs &amp; periféricos prontos para entrega
-          </span>
-        </div>
-        <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-bold flex items-center gap-1">
-          <span className="material-symbols-outlined text-[15px]">verified</span> Pronta Entrega
-        </span>
-      </div>
-
-      {/* Empty State Card (Exatamente como Screenshot 1) */}
-      {filteredProducts.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-xs p-8 text-center space-y-4 my-4">
+      {products.length === 0 ? (
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-xs p-8 text-center space-y-4 mt-8">
           <div className="w-16 h-16 mx-auto rounded-2xl bg-blue-50 text-[#00658c] flex items-center justify-center">
             <span className="material-symbols-outlined text-[32px]">desktop_windows</span>
           </div>
           <div className="space-y-1">
             <h3 className="text-base font-bold text-slate-900">
-              Nenhum item encontrado nesta categoria
+              Seu estoque está vazio
             </h3>
             <p className="text-xs text-slate-500 max-w-xs mx-auto">
-              Cadastre novos computadores montados, telas, mouses, teclados ou fones.
+              Cadastre seu primeiro produto para começar a controlar o estoque.
             </p>
           </div>
           <button
@@ -164,7 +104,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
         </div>
       ) : (
         <div className="space-y-3">
-          {filteredProducts.map((p) => (
+          {products.map((p) => (
             <div
               key={p.id}
               className="bg-white rounded-2xl border border-slate-200 shadow-xs p-3.5 hover:border-slate-300 transition-all flex gap-3"
