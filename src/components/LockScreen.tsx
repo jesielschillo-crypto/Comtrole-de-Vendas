@@ -17,7 +17,7 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlocked, onOpenAdminP
   const [loginPassword, setLoginPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleRegister = (event: React.FormEvent) => {
+  const handleRegister = async (event: React.FormEvent) => {
     event.preventDefault();
     setError('');
 
@@ -34,7 +34,7 @@ export const LockScreen: React.FC<LockScreenProps> = ({ onUnlocked, onOpenAdminP
       return;
     }
 
-    const user = StorageManager.registerUser({
+    const user = await StorageManager.registerUser({
       fullName: name.trim(),
       email: email.trim().toLowerCase(),
       username: username.trim().toLowerCase().replace(/\s+/g, ''),

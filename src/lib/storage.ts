@@ -68,9 +68,15 @@ export async function hydrateStorageFromCloud(): Promise<boolean> {
   };
 
   CLOUD_STATE_KEYS.forEach(key => {
+    const localUsers = key === 'USERS' ? StorageManager.getUsers() : [];
+    const cloudUsers = cloudValues.get(key);
+    const value = key === 'USERS' && Array.isArray(cloudUsers) && cloudUsers.length === 0 && localUsers.length > 0
+      ? localUsers
+      : cloudValues.has(key) ? cloudUsers : emptyValues[key];
+
     localStorage.setItem(
       STORAGE_KEYS[key],
-      JSON.stringify(cloudValues.has(key) ? cloudValues.get(key) : emptyValues[key]),
+      JSON.stringify(value),
     );
   });
 
@@ -513,7 +519,7 @@ export const StorageManager = {
     return [];
   },
 
-  registerUser(userData: Omit<UserAccount, 'id' | 'createdAt'>): UserAccount {
+  async registerUser(userData: Omit<UserAccount, 'id' | 'createdAt'>): Promise<UserAccount> {
     const users = this.getUsers();
     // Verifica se já existe username ou email
     const existingIndex = users.findIndex(
@@ -535,7 +541,7 @@ export const StorageManager = {
 
     localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
 
-    void saveCloudState('USERS', users);
+    await saveCloudState('USERS', users);
 
     return newUser;
   },
